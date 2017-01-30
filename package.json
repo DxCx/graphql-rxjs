@@ -19,8 +19,10 @@
     "url": "http://github.com/DxCx/graphql-rxjs.git"
   },
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "babel ./graphql/src --optional runtime --ignore __tests__ --out-dir dist/"
+    "pregraphql-build": "rimraf graphql-build",
+    "graphql-build": "babel ./graphql/src --optional runtime --ignore __tests__ --out-dir graphql-build/",
+    "prebuild": "npm run graphql-build",
+    "build": "echo TODO"
   },
   "peerDependencies": {
     "rxjs": "^5.0.3",
