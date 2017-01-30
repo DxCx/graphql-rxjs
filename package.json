@@ -1,0 +1,30 @@
+{
+  "name": "graphql-rxjs",
+  "version": "0.9.1",
+  "description": "Addon package for GraphQL which adds support for Observables",
+  "contributors": [
+  	"Hagai Cohen <hagai.co@gmail.com>",
+    "Lee Byron <lee@leebyron.com> (http://leebyron.com/)",
+    "Nicholas Schrock <schrockn@fb.com>",
+    "Daniel Schafer <dschafer@fb.com>"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "index.js",
+  "homepage": "https://github.com/DxCx/graphql-rxjs",
+  "bugs": {
+    "url": "https://github.com/DxCx/graphql-rxjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/DxCx/graphql-rxjs.git"
+  },
+  "scripts": {},
+  "peerDependencies": {
+    "rxjs": "^5.0.3",
+    "graphql": "0.9.1"
+  },
+  "devDependencies": {
+    "rxjs": "^5.0.3",
+    "graphql": "0.9.1"
+  }
+}
