@@ -1,1 +1,5 @@
-graphql
+*
+!dist/**/*
+!package.json
+!*.md
+!*.d.ts

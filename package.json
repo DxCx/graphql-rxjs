@@ -9,7 +9,8 @@
     "Daniel Schafer <dschafer@fb.com>"
   ],
   "license": "BSD-3-Clause",
-  "main": "index.js",
+  "main": "dist/bundle.js",
+  "typings": "bundle.d.ts",
   "homepage": "https://github.com/DxCx/graphql-rxjs",
   "bugs": {
     "url": "https://github.com/DxCx/graphql-rxjs/issues"
@@ -19,42 +20,31 @@
     "url": "http://github.com/DxCx/graphql-rxjs.git"
   },
   "scripts": {
-    "pregraphql-build": "rimraf graphql-build",
-    "graphql-build": "babel ./graphql/src --optional runtime --ignore __tests__ --out-dir graphql-build/",
-    "prebuild": "npm run graphql-build",
-    "build": "echo TODO"
+    "prebuild": "rimraf dist",
+    "build": "rollup -c"
   },
   "peerDependencies": {
     "rxjs": "^5.0.3",
     "graphql": "0.9.1"
   },
+  "optionalDependencies": {
+    "@types/graphql": "^0.8.6"
+  },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-eslint": "7.1.1",
-    "babel-plugin-check-es2015-constants": "6.22.0",
-    "babel-plugin-syntax-async-functions": "6.13.0",
-    "babel-plugin-transform-class-properties": "6.22.0",
-    "babel-plugin-transform-es2015-arrow-functions": "6.22.0",
-    "babel-plugin-transform-es2015-block-scoped-functions": "6.22.0",
-    "babel-plugin-transform-es2015-block-scoping": "6.22.0",
-    "babel-plugin-transform-es2015-classes": "6.22.0",
-    "babel-plugin-transform-es2015-computed-properties": "6.22.0",
-    "babel-plugin-transform-es2015-destructuring": "6.22.0",
-    "babel-plugin-transform-es2015-duplicate-keys": "6.22.0",
-    "babel-plugin-transform-es2015-function-name": "6.22.0",
-    "babel-plugin-transform-es2015-literals": "6.22.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "6.22.0",
-    "babel-plugin-transform-es2015-object-super": "6.22.0",
-    "babel-plugin-transform-es2015-parameters": "6.22.0",
-    "babel-plugin-transform-es2015-shorthand-properties": "6.22.0",
-    "babel-plugin-transform-es2015-spread": "6.22.0",
-    "babel-plugin-transform-es2015-template-literals": "6.22.0",
-    "babel-plugin-transform-es3-property-literals": "^6.22.0",
+    "@types/graphql": "^0.8.6",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-syntax-flow": "^6.18.0",
     "babel-plugin-transform-flow-strip-types": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.22.0",
-    "babel-plugin-transform-regenerator": "6.22.0",
+    "babel-preset-es2015": "^6.22.0",
     "graphql": "0.9.1",
     "rimraf": "^2.5.4",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-cleanup": "^1.0.0",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-flow": "^1.1.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "rxjs": "^5.0.3"
   }
 }
