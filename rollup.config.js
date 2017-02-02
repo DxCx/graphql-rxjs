@@ -5,34 +5,96 @@ import cleanup from 'rollup-plugin-cleanup';
 import strip from 'rollup-plugin-strip';
 import filesize from 'rollup-plugin-filesize';
 import progress from 'rollup-plugin-progress';
-// import uglify from 'rollup-plugin-uglify';
+import * as fs from 'fs';
+import uglify from 'rollup-plugin-uglify';
+
+const babelHackPlugin = require('./babel-plugin');
+const path = require('path');
+const pkg = JSON.parse(fs.readFileSync('./package.json')),
+      external = Object.keys(pkg.peerDependencies || {})
+      .concat([
+        'graphql/type',
+        'graphql/language',
+        'graphql/language/source',
+        'graphql/language/kinds',
+        'graphql/language/parser',
+        'graphql/language/ast',
+        'graphql/validation',
+        'graphql/validation/validate',
+        'graphql/error',
+        'graphql/utilities',
+        'graphql/type/schema',
+        'graphql/jsutils/find',
+        'graphql/jsutils/invariant',
+        'graphql/jsutils/isNullish',
+        'graphql/utilities/typeFromAST',
+        'graphql/execution/values',
+        'graphql/type/definition',
+        'graphql/type/schema',
+        'graphql/type/introspection',
+        'graphql/type/directives',
+      ]);
 
 export default {
-    entry: 'js/index.js',
-    //format: 'iife',
+    entry: 'graphql/src/index.js',
     format: 'cjs',
     plugins: [
       filesize(),
       progress(),
-      nodeResolve({ jsnext: true, module: true }),
+      nodeResolve({
+        jsnext: true,
+        module: true,
+      }),
       commonjs({
-        include: 'node_modules/**',
+        include: [
+          'node_modules/graphql/**',
+          'node_modules/iterall/**',
+          'node_modules/rxjs/**',
+        ],
       }),
       babel({
         babelrc: false,
         runtimeHelpers: true,
-        presets: [
-          ["es2015", { "modules": false }],
+        plugins: [
+          [babelHackPlugin, {
+              exclude: ['node_modules/**'],
+              external,
+              mapping: {
+                [path.join(__dirname, "graphql", "src", "(.+?)\.js$")]:
+                 path.join(__dirname, "node_modules", "graphql", "$1.js.flow"),
+              }
+          }],
+          "syntax-async-functions",
+          "transform-class-properties",
+          "transform-flow-strip-types",
+          "transform-object-rest-spread",
+          "transform-es2015-template-literals",
+          "transform-es2015-literals",
+          "transform-es2015-function-name",
+          "transform-es2015-arrow-functions",
+          "transform-es2015-block-scoped-functions",
+          ["transform-es2015-classes", {loose: true}],
+          "transform-es2015-object-super",
+          "transform-es2015-shorthand-properties",
+          "transform-es2015-duplicate-keys",
+          "transform-es2015-computed-properties",
+          "check-es2015-constants",
+          ["transform-es2015-spread", {loose: true}],
+          "transform-es2015-parameters",
+          ["transform-es2015-destructuring", {loose: true}],
+          "transform-es2015-block-scoping",
+          "transform-regenerator",
+          "transform-es3-property-literals",
+          "external-helpers",
         ],
-        plugins: ["external-helpers", "syntax-flow", "transform-flow-strip-types", "transform-object-rest-spread"],
       }),
       strip(),
       cleanup({
         maxEmptyLines: 1,
         comments: "none",
       }),
-      // uglify(),
+      uglify(),
     ],
     dest: 'dist/bundle.js',
-    external: [ 'graphql', 'iterall', 'rxjs' ],
+    external,
 };
