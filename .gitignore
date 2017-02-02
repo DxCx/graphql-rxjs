@@ -1,1 +1,11 @@
-node_modules
+*
+!src/
+!src/**/*
+!*.js
+!*.json
+!*.md
+!.gitignore
+!.gitmodules
+!.travis.yml
+!LICENSE
+!.npmignore
