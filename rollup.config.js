@@ -6,10 +6,11 @@ import strip from 'rollup-plugin-strip';
 import filesize from 'rollup-plugin-filesize';
 import progress from 'rollup-plugin-progress';
 import * as fs from 'fs';
+import * as path from 'path';
 import uglify from 'rollup-plugin-uglify';
 
-const babelHackPlugin = require('./babel-plugin');
-const path = require('path');
+const babelTransformDuplicate = require('./babel-plugin-transform-import-duplicate.js');
+
 const pkg = JSON.parse(fs.readFileSync('./package.json')),
       external = Object.keys(pkg.peerDependencies || {})
       .concat([
@@ -56,7 +57,7 @@ export default {
         babelrc: false,
         runtimeHelpers: true,
         plugins: [
-          [babelHackPlugin, {
+          [babelTransformDuplicate, {
               exclude: ['node_modules/**'],
               external,
               mapping: {
