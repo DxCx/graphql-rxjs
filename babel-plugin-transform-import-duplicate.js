@@ -1,3 +1,5 @@
+"use strict";
+
 const pathModule = require('path')
 const fs = require('fs')
 const nodeResolveSync = require('resolve').sync;
