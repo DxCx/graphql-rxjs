@@ -90,6 +90,7 @@ the observable will stream immutable results.
 
   type Subscription {
     clock: String
+  }
   ```
 
   `Query` type exposes `someInt`, just because it cannot be empty, let's ignore that.
