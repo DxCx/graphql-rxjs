@@ -2,6 +2,8 @@
 
 fork of [graphql-js](https://github.com/graphql/graphql-js) which adds Observable support.
 
+[![npm version](https://badge.fury.io/js/graphql-rxjs.svg)](http://badge.fury.io/js/graphql-rxjs)
+
 ## Intro
 
 This package basiclly adds Observables support to a GraphQL resolver.
