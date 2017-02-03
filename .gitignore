@@ -1,6 +1,8 @@
 *
-!src/
-!src/**/*
+!__tests__/
+!__tests__/**/*
+!examples/
+!examples/**/*
 !*.js
 !*.json
 !*.md
