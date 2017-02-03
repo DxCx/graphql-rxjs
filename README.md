@@ -8,18 +8,18 @@ fork of [graphql-js](https://github.com/graphql/graphql-js) which adds Observabl
 ## Intro
 
 This package basiclly adds Observables support to a GraphQL resolver.
-it is basiclly importing the original graphql-js package for all the code that is not patched,
+It is importing the original graphql-js package for all the code that is not patched,
 and provide a reactive execution engine over it.
 
 ## Documentation
 
-There is no much to document, all GraphQL documentation are relevant for here.
-See more complete documentation at http://graphql.org/ and
+There isn't much to document, all of GraphQL documentation is relevant.
+See the complete documentation at http://graphql.org/ and
 http://graphql.org/graphql-js/.
 
 ## Versioning
 
-I'll be trying to follow along with `graphql-js` versions,
+I'll try to follow along with `graphql-js` versions,
 so basiclly, each graphql-js version should have a working graphql-rxjs package with it.
 
 ## API
@@ -46,9 +46,9 @@ export function executeReactive(
 ): Observable<ExecutionResult>;
 ```
 
-they have a signature equal to GraphQL original implementation,
+The signature is equal to GraphQL original implementation,
 except it returns an observable instead of a promise.
-the observable will stream immutable results.
+The observable will stream immutable results.
 
 ## Getting Started:
 
@@ -59,12 +59,12 @@ the observable will stream immutable results.
   const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
   ```
 
-  we can see that it is an Observable that emits `i+1` every second:
+  We can see that it is an Observable that emits `i+1` every second:
   ```typescript
   let source = Observable.interval(1000);
   ```
 
-  next we are going to map the value to a the current timestep:
+  Next we are going to map the value to a the current timestep:
   ```typescript
   source = source.map(() => new Date());
   ```
@@ -76,13 +76,13 @@ the observable will stream immutable results.
   and from then on, each subscriber will get the last value (without triggering the provider function)
   and then, both subscribers will get `next` values.
 
-  When subscriber unsubscribe, the refCount will decrease,
-  until finally the counter reachs zero, and only then the unsubscribe function will be triggered.
+  Once a subscriber unsubscribe, the refCount will decrease,
+  until the counter reachs zero, and only then the unsubscribe function will be triggered.
   ```typescript
   const clockSource = source.publishReplay(1).refCount();
   ```
 
- This approach will let us manage resources much efficiently.
+ This approach will let us manage resources much more efficiently.
 
 2. The Scheme
 
@@ -105,7 +105,7 @@ the observable will stream immutable results.
 
 3. Wrapping them togather
 
-  So, here is a piece of basic code to show the concept:
+  So, here is a basic code to demonstrate the concept:
   ```typescript
   import { Observable } from 'rxjs';
   import { makeExecutableSchema } from 'graphql-tools';
@@ -147,7 +147,7 @@ the observable will stream immutable results.
   .subscribe(console.log.bind(console), console.error.bind(console));
   ```
 
-  the following code will emit in console:
+  The following code will emit in console:
   ```json
   {"data":{"clock":"Fri Feb 02 2017 20:28:01 GMT+0200 (IST)"}}
   {"data":{"clock":"Fri Feb 02 2017 20:28:02 GMT+0200 (IST)"}}
@@ -157,17 +157,17 @@ the observable will stream immutable results.
 
 ## Typescript support
 
-just install `@types/graphql` for initial GraphQL support,
+Just install `@types/graphql` for initial GraphQL support,
 then the package will automatically add typings for the new functions it provides.
 
 ## Issues
 
-if you have any issue or idea, you are welcome to open a new ticket in [Issues Page](https://github.com/DxCx/graphql-rxjs/issues)
+If you found an issue or have an idea, you are welcome to open a new ticket in [Issues Page](https://github.com/DxCx/graphql-rxjs/issues)
 
 ## Support
 
-using this approach, feels much more intuative then the other approaches to stream results so far.
-because of that i tried to push it into upstream `graphql-js` and got rejected,
+Using this approach, feels much more intuative then the other approaches to stream results so far.
+Because of that I tried to push it into upstream `graphql-js` but got rejected,
 if you want to support the project you can follow/thumbs up the following:
 
 1. [Issue on graphql-js](https://github.com/graphql/graphql-js/issues/501)
@@ -176,5 +176,5 @@ if you want to support the project you can follow/thumbs up the following:
 
 ### Contributing
 
-I am welcoming any pull requests,
+All pull requests are welcome,
 if you think something needs to be done, just open an issue or a PR :)
