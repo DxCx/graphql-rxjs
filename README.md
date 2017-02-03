@@ -55,12 +55,12 @@ the observable will stream immutable results.
 
   we can see that it is an Observable that emits `i+1` every second:
   ```typescript
-  const source = Observable.interval(1000);
+  let source = Observable.interval(1000);
   ```
 
   next we are going to map the value to a the current timestep:
   ```typescript
-  source.map(() => new Date());
+  source = source.map(() => new Date());
   ```
 
   Finally, We are going to convert the observable into an hot observable, or multicast.
