@@ -3,6 +3,7 @@
 fork of [graphql-js](https://github.com/graphql/graphql-js) which adds Observable support ([RxJs](http://reactivex.io/rxjs/)).
 
 [![npm version](https://badge.fury.io/js/graphql-rxjs.svg)](http://badge.fury.io/js/graphql-rxjs)
+[![Build Status](https://travis-ci.org/DxCx/graphql-rxjs.svg?branch=master)](https://travis-ci.org/DxCx/graphql-rxjs?branch=master)
 
 ## Intro
 
@@ -15,6 +16,11 @@ and provide a reactive execution engine over it.
 There is no much to document, all GraphQL documentation are relevant for here.
 See more complete documentation at http://graphql.org/ and
 http://graphql.org/graphql-js/.
+
+## Versioning
+
+I'll be trying to follow along with `graphql-js` versions,
+so basiclly, each graphql-js version should have a working graphql-rxjs package with it.
 
 ## API
 
@@ -154,12 +160,21 @@ the observable will stream immutable results.
 just install `@types/graphql` for initial GraphQL support,
 then the package will automatically add typings for the new functions it provides.
 
+## Issues
+
+if you have any issue or idea, you are welcome to open a new ticket in [Issues Page](https://github.com/DxCx/graphql-rxjs/issues)
+
+## Support
+
+using this approach, feels much more intuative then the other approaches to stream results so far.
+because of that i tried to push it into upstream `graphql-js` and got rejected,
+if you want to support the project you can follow/thumbs up the following:
+
+1. [Issue on graphql-js](https://github.com/graphql/graphql-js/issues/501)
+2. [PR on graphql-js](https://github.com/graphql/graphql-js/pull/502)
+3. [Draft design for apollo subscriptions](https://github.com/apollographql/graphql-subscriptions/pull/30)
+
 ### Contributing
 
 I am welcoming any pull requests,
 if you think something needs to be done, just open an issue or a PR :)
-
-## Versioning
-
-I'll be trying to follow along with `graphql-js` versions,
-so basiclly, each graphql-js version should have a working graphql-rxjs package with it.
