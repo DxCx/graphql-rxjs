@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "4"
+  - "6"
+  - "7"
+
+cache:
+  directories:
+    - ${HOME}/.npm
+    - node_modules
+
+before_install:
+  - npm config set spin=false
+  - npm install -g npm@4
+
+install:
+  - npm install
+  - npm prune
+
+script:
+  - npm test
+
+# Allow Travis tests to run in containers.
+sudo: false
