@@ -1,4 +1,4 @@
 [submodule "graphql"]
 	path = graphql
 	url = https://github.com/DxCx/graphql-js.git
-	branch = rxjs-v0.9.1
+	branch = rxjs-v0.9.2
