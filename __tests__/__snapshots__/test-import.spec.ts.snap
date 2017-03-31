@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`graphql-rxjs import tests also works with vanilla graphql objects 1`] = `
 Array [
   Object {
