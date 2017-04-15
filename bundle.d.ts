@@ -1,4 +1,4 @@
-import { DocumentNode, ExecutionResult, GraphQLSchema } from 'graphql';
+import { DocumentNode, ExecutionResult, GraphQLSchema, GraphQLDirective } from 'graphql';
 import { Observable } from 'rxjs';
 export * from 'graphql';
 
@@ -19,3 +19,10 @@ export function executeReactive(
   variableValues?: {[key: string]: any},
   operationName?: string
 ): Observable<ExecutionResult>;
+
+export function addReactiveDirectivesToSchema(
+  schema: GraphQLSchema,
+): void;
+
+export const GraphQLLiveDirective: GraphQLDirective;
+export const GraphQLDeferDirective: GraphQLDirective;

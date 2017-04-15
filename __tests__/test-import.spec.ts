@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { makeExecutableSchema } from 'graphql-tools';
-import { graphqlReactive } from '..';
+import { graphqlReactive, addReactiveDirectivesToSchema } from '..';
 import { GraphQLInt, GraphQLSchema, GraphQLObjectType } from 'graphql';
 import 'jest';
 
@@ -117,4 +117,35 @@ describe('graphql-rxjs import tests', () => {
     });
   });
 
+  it("able to add reactive directives to schema", () => {
+    const QueryType = new GraphQLObjectType({
+      name: 'Query',
+      fields: {
+        counter: {
+          type: GraphQLInt,
+          resolve: (root, args, ctx) => {
+            return Observable.interval(10);
+          },
+        }
+      }
+    });
+
+    const scheme = new GraphQLSchema({
+      query: QueryType,
+    });
+    addReactiveDirectivesToSchema(scheme);
+
+    const query = `
+      query {
+        counter @live
+      }
+    `;
+
+    return graphqlReactive(scheme, query, null)
+      .bufferCount(10)
+      .take(1)
+      .toPromise().then((values) => {
+        expect(values).toMatchSnapshot();
+    });
+  });
 });
