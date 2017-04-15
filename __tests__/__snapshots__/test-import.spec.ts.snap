@@ -1,5 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`graphql-rxjs import tests able to add reactive directives to schema 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "counter": 0,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 1,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 2,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 3,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 4,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 5,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 6,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 7,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 8,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 9,
+    },
+  },
+]
+`;
+
 exports[`graphql-rxjs import tests also works with vanilla graphql objects 1`] = `
 Array [
   Object {
