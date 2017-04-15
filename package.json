@@ -1,6 +1,6 @@
 {
   "name": "graphql-rxjs",
-  "version": "0.9.3-rc.2",
+  "version": "0.9.3-rc.3",
   "description": "Addon package for GraphQL which adds support for Observables",
   "contributors": [
     "Hagai Cohen <hagai.co@gmail.com>",
