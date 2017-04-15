@@ -31,7 +31,6 @@ const pkg = JSON.parse(fs.readFileSync('./package.json')),
         'graphql/jsutils/invariant',
         'graphql/jsutils/isNullish',
         'graphql/utilities/typeFromAST',
-        'graphql/utilities/assertValidName',
         'graphql/execution/values',
         'graphql/type/definition',
         'graphql/type/schema',
@@ -64,6 +63,9 @@ export default {
           [babelTransformDuplicate, {
               exclude: ['node_modules/**'],
               external,
+              newFiles: [
+                path.join(__dirname, "graphql", "src", "type", "reactiveDirectives.js")
+              ],
               mapping: {
                 [path.join(__dirname, "graphql", "src", "(.+?)\.js$")]:
                  path.join(__dirname, "node_modules", "graphql", "$1.js.flow"),

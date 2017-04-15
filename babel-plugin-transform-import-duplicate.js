@@ -54,6 +54,11 @@ function handleImport(path, file, opts) {
   const dirName = pathModule.dirname(file.parserOpts.sourceFileName);
   const importPath = nodeResolveSync(pathModule.join(dirName, path.node.value));
 
+  if ( opts.newFiles.some((x) => x === importPath) ) {
+    // this is declared as new file, import always.
+    return;
+  }
+
   // Search for the mapping;
   const matching = Object.keys(opts.mapping).map((key) => {
     const regexKey = new RegExp(key);
@@ -82,6 +87,7 @@ function onImportListener(path, file, opts) {
   const mapping = (opts && opts.mapping) || undefined;
   const exclude = opts.exclude || [];
   const externals = opts.external || [];
+  const newFiles = opts.newFiles || [];
 
   // Make sure mapping exists
   if ( undefined === mapping ) {
@@ -90,6 +96,7 @@ function onImportListener(path, file, opts) {
 
   opts.exclude = exclude;
   opts.externals = externals;
+  opts.newFiles = newFiles;
 
   // filter literal values
   if (false === path.isLiteral()) {
