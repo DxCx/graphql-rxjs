@@ -31,11 +31,13 @@ const pkg = JSON.parse(fs.readFileSync('./package.json')),
         'graphql/jsutils/invariant',
         'graphql/jsutils/isNullish',
         'graphql/utilities/typeFromAST',
+        'graphql/utilities/assertValidName',
         'graphql/execution/values',
         'graphql/type/definition',
         'graphql/type/schema',
         'graphql/type/introspection',
         'graphql/type/directives',
+        'graphql/type/scalars',
       ]);
 
 export default {
