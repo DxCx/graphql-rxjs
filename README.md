@@ -102,11 +102,12 @@ More information about reactive directives can be found below.
   Next, let's look at our scheme
 
   ```graphql
-  # Root Subscription
+  # Root Query
   type Query {
     someInt: Int
   }
-
+  
+  # Root Subscription
   type Subscription {
     clock: String
   }
@@ -127,11 +128,12 @@ More information about reactive directives can be found below.
   const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
 
   const typeDefs = `
-  # Root Subscription
+  # Root Query
   type Query {
 	someInt: Int
   }
-
+  
+  # Root Subscription
   type Subscription {
     clock: String
   }
@@ -160,7 +162,7 @@ More information about reactive directives can be found below.
   .subscribe(console.log.bind(console), console.error.bind(console));
   ```
 
-  The following code will emit in console:
+  The following response will emit in console:
   ```json
   {"data":{"clock":"Fri Feb 02 2017 20:28:01 GMT+0200 (IST)"}}
   {"data":{"clock":"Fri Feb 02 2017 20:28:02 GMT+0200 (IST)"}}
@@ -181,7 +183,49 @@ This library also implements reactive directives, those are supported at the mom
     - specific field
     - spread fragment
     - named fragment
-  - Example: **(TODO)**
+  - Example: 
+	```typescript
+	import { Observable } from 'rxjs';
+	import { makeExecutableSchema } from 'graphql-tools';
+	import { addReactiveDirectivesToSchema, graphqlReactive } from 'graphql-rxjs';
+
+	const remoteString = new Promise((resolve, reject) => {
+	  setTimeout(() => resolve('Hello World!'), 5000);
+	});
+
+	const typeDefs = `
+	# Root Query
+	type Query {
+	  remoteString: String
+	}
+	`;
+
+	const resolvers = {
+	    Query: {
+	      remoteString: (root, args, ctx) => ctx.remoteString,
+	    },
+	};
+
+	const scheme = makeExecutableSchema({typeDefs, resolvers});
+	addReactiveDirectivesToSchema(scheme);
+
+	const query = `
+	  query {
+	    remoteString @defer
+	  }
+	`;
+
+	const log = (result) => console.log("[" + (new Date).toLocaleTimeString() + "] " + JSON.stringify(result));
+
+	graphqlReactive(scheme, query, null, { remoteString })
+	.subscribe(log, console.error.bind(console));
+	```
+
+	The following response will emit in console:
+	```
+	[8:58:05 PM] {"data":{}}
+	[8:58:10 PM] {"data":{"remoteString":"Hello World!"}}
+	``` 
 2. `GraphQLLiveDirective` (`@live`)
   - This directive does not require any arguments.
   - This directive instructs the executor that the value should be monitored live
@@ -193,7 +237,58 @@ This library also implements reactive directives, those are supported at the mom
     - spread fragment
     - named fragment
     - fragment definition - (Live Fragment)
-  - Example: **(TODO)**
+  - Example:
+  	```typescript
+	import { Observable } from 'rxjs';
+	import { makeExecutableSchema } from 'graphql-tools';
+	import { addReactiveDirectivesToSchema, graphqlReactive } from '..';
+
+	const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
+
+	const typeDefs = `
+	# Root Query
+	type Query {
+	  clock: String
+	}
+	`;
+
+	const resolvers = {
+	    Query: {
+	      clock: (root, args, ctx) => ctx.clockSource,
+	    },
+	};
+
+	const scheme = makeExecutableSchema({typeDefs, resolvers});
+	addReactiveDirectivesToSchema(scheme);
+
+	const query = `
+	  query {
+	    clock
+	  }
+	`;
+
+	const liveQuery = `
+	  query {
+	    clock @live
+	  }
+	`;
+
+	graphqlReactive(scheme, query, null, { clockSource })
+	.subscribe(console.log.bind(console, "standard: "), console.error.bind(console));
+
+	graphqlReactive(scheme, liveQuery, null, { clockSource })
+	.subscribe(console.log.bind(console, "live: "), console.error.bind(console));
+	```
+
+	The following response will emit in console:
+	```
+	standard:  { data: { clock: 'Sun Apr 16 2017 21:04:57 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:04:57 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:04:58 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:04:59 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:05:00 GMT+0300 (EEST)' } }
+	...
+	```
 
 ## Typescript support
 
