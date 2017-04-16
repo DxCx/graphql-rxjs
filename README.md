@@ -26,6 +26,8 @@ so basiclly, each graphql-js version should have a working graphql-rxjs package 
 
 The library exports the following functions:
 
+#### Observable support
+
 ```typescript
 export function graphqlReactive(
   schema: GraphQLSchema,
@@ -46,9 +48,20 @@ export function executeReactive(
 ): Observable<ExecutionResult>;
 ```
 
-The signature is equal to GraphQL original implementation,
+The signature is equal to GraphQL original implementation (graphql + execute),
 except it returns an observable instead of a promise.
 The observable will stream immutable results.
+
+#### Reactive Directives
+```typescript
+export function addReactiveDirectivesToSchema(
+  schema: GraphQLSchema,
+): void;
+```
+
+Calling this function on your existing `GraphQLSchema` object will
+enable reactive directives suppot for the schema.
+More information about reactive directives can be found below.
 
 ## Getting Started:
 
@@ -154,6 +167,33 @@ The observable will stream immutable results.
   {"data":{"clock":"Fri Feb 02 2017 20:28:03 GMT+0200 (IST)"}}
   ...
   ```
+
+## Reactive Directives
+This library also implements reactive directives, those are supported at the moment:
+
+1. `GraphQLDeferDirective` (`@defer`)
+  - This directive does not require any arguments.
+  - This directive instructs the executor to not resolve this field immedaitly,
+    but instead return the response without the deferred field,
+    and once the field is deferred, it will emit a corrected result.
+  - executor will ignore this directive if resolver for this value is not async.
+  - can be applied on:
+    - specific field
+    - spread fragment
+    - named fragment
+  - Example: **(TODO)**
+2. `GraphQLLiveDirective` (`@live`)
+  - This directive does not require any arguments.
+  - This directive instructs the executor that the value should be monitored live
+    which means that once updated, it will emit the updated respose.
+  - executor will ignore this directive if field is not resolved
+    with an observable (or at least have a parent observable).
+  - can be applied on:
+    - specific field
+    - spread fragment
+    - named fragment
+    - fragment definition - (Live Fragment)
+  - Example: **(TODO)**
 
 ## Typescript support
 
