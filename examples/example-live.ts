@@ -5,7 +5,7 @@ import { addReactiveDirectivesToSchema, graphqlReactive } from '..';
 const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
 
 const typeDefs = `
-# Root Subscription
+# Root Query
 type Query {
   clock: String
 }

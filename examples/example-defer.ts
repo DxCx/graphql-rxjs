@@ -7,7 +7,7 @@ const remoteString = new Promise((resolve, reject) => {
 });
 
 const typeDefs = `
-# Root Subscription
+# Root Query
 type Query {
 	remoteString: String
 }
