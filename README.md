@@ -174,8 +174,8 @@ This library also implements reactive directives, those are supported at the mom
 1. `GraphQLDeferDirective` (`@defer`)
   - This directive does not require any arguments.
   - This directive instructs the executor to not resolve this field immedaitly,
-    but instead return the response without the deferred field,
-    and once the field is deferred, it will emit a corrected result.
+    but instead returning the response without the deferred field,
+    once the field is deferred, it will emit a corrected result.
   - executor will ignore this directive if resolver for this value is not async.
   - can be applied on:
     - specific field
