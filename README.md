@@ -26,6 +26,8 @@ so basiclly, each graphql-js version should have a working graphql-rxjs package 
 
 The library exports the following functions:
 
+#### Observable support
+
 ```typescript
 export function graphqlReactive(
   schema: GraphQLSchema,
@@ -46,9 +48,20 @@ export function executeReactive(
 ): Observable<ExecutionResult>;
 ```
 
-The signature is equal to GraphQL original implementation,
+The signature is equal to GraphQL original implementation (graphql + execute),
 except it returns an observable instead of a promise.
 The observable will stream immutable results.
+
+#### Reactive Directives
+```typescript
+export function addReactiveDirectivesToSchema(
+  schema: GraphQLSchema,
+): void;
+```
+
+Calling this function on your existing `GraphQLSchema` object will
+enable reactive directives suppot for the schema.
+More information about reactive directives can be found below.
 
 ## Getting Started:
 
@@ -89,11 +102,12 @@ The observable will stream immutable results.
   Next, let's look at our scheme
 
   ```graphql
-  # Root Subscription
+  # Root Query
   type Query {
     someInt: Int
   }
-
+  
+  # Root Subscription
   type Subscription {
     clock: String
   }
@@ -114,11 +128,12 @@ The observable will stream immutable results.
   const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
 
   const typeDefs = `
-  # Root Subscription
+  # Root Query
   type Query {
 	someInt: Int
   }
-
+  
+  # Root Subscription
   type Subscription {
     clock: String
   }
@@ -147,13 +162,133 @@ The observable will stream immutable results.
   .subscribe(console.log.bind(console), console.error.bind(console));
   ```
 
-  The following code will emit in console:
+  The following response will emit in console:
   ```json
   {"data":{"clock":"Fri Feb 02 2017 20:28:01 GMT+0200 (IST)"}}
   {"data":{"clock":"Fri Feb 02 2017 20:28:02 GMT+0200 (IST)"}}
   {"data":{"clock":"Fri Feb 02 2017 20:28:03 GMT+0200 (IST)"}}
   ...
   ```
+
+## Reactive Directives
+This library also implements reactive directives, those are supported at the moment:
+
+1. `GraphQLDeferDirective` (`@defer`)
+  - This directive does not require any arguments.
+  - This directive instructs the executor to not resolve this field immedaitly,
+    but instead returning the response without the deferred field,
+    once the field is deferred, it will emit a corrected result.
+  - executor will ignore this directive if resolver for this value is not async.
+  - can be applied on:
+    - specific field
+    - spread fragment
+    - named fragment
+  - Example: 
+	```typescript
+	import { Observable } from 'rxjs';
+	import { makeExecutableSchema } from 'graphql-tools';
+	import { addReactiveDirectivesToSchema, graphqlReactive } from 'graphql-rxjs';
+
+	const remoteString = new Promise((resolve, reject) => {
+	  setTimeout(() => resolve('Hello World!'), 5000);
+	});
+
+	const typeDefs = `
+	# Root Query
+	type Query {
+	  remoteString: String
+	}
+	`;
+
+	const resolvers = {
+	    Query: {
+	      remoteString: (root, args, ctx) => ctx.remoteString,
+	    },
+	};
+
+	const scheme = makeExecutableSchema({typeDefs, resolvers});
+	addReactiveDirectivesToSchema(scheme);
+
+	const query = `
+	  query {
+	    remoteString @defer
+	  }
+	`;
+
+	const log = (result) => console.log("[" + (new Date).toLocaleTimeString() + "] " + JSON.stringify(result));
+
+	graphqlReactive(scheme, query, null, { remoteString })
+	.subscribe(log, console.error.bind(console));
+	```
+
+	The following response will emit in console:
+	```
+	[8:58:05 PM] {"data":{}}
+	[8:58:10 PM] {"data":{"remoteString":"Hello World!"}}
+	``` 
+2. `GraphQLLiveDirective` (`@live`)
+  - This directive does not require any arguments.
+  - This directive instructs the executor that the value should be monitored live
+    which means that once updated, it will emit the updated respose.
+  - executor will ignore this directive if field is not resolved
+    with an observable (or at least have a parent observable).
+  - can be applied on:
+    - specific field
+    - spread fragment
+    - named fragment
+    - fragment definition - (Live Fragment)
+  - Example:
+  	```typescript
+	import { Observable } from 'rxjs';
+	import { makeExecutableSchema } from 'graphql-tools';
+	import { addReactiveDirectivesToSchema, graphqlReactive } from '..';
+
+	const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
+
+	const typeDefs = `
+	# Root Query
+	type Query {
+	  clock: String
+	}
+	`;
+
+	const resolvers = {
+	    Query: {
+	      clock: (root, args, ctx) => ctx.clockSource,
+	    },
+	};
+
+	const scheme = makeExecutableSchema({typeDefs, resolvers});
+	addReactiveDirectivesToSchema(scheme);
+
+	const query = `
+	  query {
+	    clock
+	  }
+	`;
+
+	const liveQuery = `
+	  query {
+	    clock @live
+	  }
+	`;
+
+	graphqlReactive(scheme, query, null, { clockSource })
+	.subscribe(console.log.bind(console, "standard: "), console.error.bind(console));
+
+	graphqlReactive(scheme, liveQuery, null, { clockSource })
+	.subscribe(console.log.bind(console, "live: "), console.error.bind(console));
+	```
+
+	The following response will emit in console:
+	```
+	standard:  { data: { clock: 'Sun Apr 16 2017 21:04:57 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:04:57 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:04:58 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:04:59 GMT+0300 (EEST)' } }
+	live:  { data: { clock: 'Sun Apr 16 2017 21:05:00 GMT+0300 (EEST)' } }
+	...
+	```
 
 ## Typescript support
 

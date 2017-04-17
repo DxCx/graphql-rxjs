@@ -1,15 +1,16 @@
 import { Observable } from 'rxjs';
 import { makeExecutableSchema } from 'graphql-tools';
-import { graphqlReactive } from 'graphql-rxjs';
+import { graphqlReactive } from '..';
 
 const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
 
 const typeDefs = `
-# Root Subscription
+# Root Query
 type Query {
 	someInt: Int
 }
 
+# Root Subscription
 type Subscription {
   clock(throttle: Int): String
 }
