@@ -1,4 +1,6 @@
 *
+!resources/
+!resources/**/*
 !__tests__/
 !__tests__/**/*
 !examples/
