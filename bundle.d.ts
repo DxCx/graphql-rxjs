@@ -1,5 +1,4 @@
 import { DocumentNode, ExecutionResult, GraphQLSchema, GraphQLDirective } from 'graphql';
-import { Observable } from 'rxjs';
 export * from 'graphql';
 
 export function graphqlReactive(
@@ -9,7 +8,7 @@ export function graphqlReactive(
   contextValue?: any,
   variableValues?: {[key: string]: any},
   operationName?: string
-): Observable<ExecutionResult>;
+): AsyncIterator<ExecutionResult>;
 
 export function executeReactive(
   schema: GraphQLSchema,
@@ -18,7 +17,7 @@ export function executeReactive(
   contextValue?: any,
   variableValues?: {[key: string]: any},
   operationName?: string
-): Observable<ExecutionResult>;
+): AsyncIterator<ExecutionResult>;
 
 export function addReactiveDirectivesToSchema(
   schema: GraphQLSchema,

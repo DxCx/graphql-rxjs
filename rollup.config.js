@@ -10,34 +10,95 @@ import progress from 'rollup-plugin-progress';
 import * as fs from 'fs';
 import * as path from 'path';
 import uglify from 'rollup-plugin-uglify';
+const BABEL_PLUGIN_REPLACE = {
+  './resources/inline-invariant': require('./graphql/resources/inline-invariant'),
+  'babel-plugin-transform-import-duplicate': require('./babel-plugin-transform-import-duplicate'),
+};
 
-const babelTransformDuplicate = require('./babel-plugin-transform-import-duplicate.js');
+// Add Graphql's node_modules to path so we can resolve babel plugins.
+process.env.NODE_PATH = fs.realpathSync(path.join(
+  __dirname,
+  'graphql',
+  'node_modules'
+));
 
-const pkg = JSON.parse(fs.readFileSync('./package.json')),
-      external = Object.keys(pkg.peerDependencies || {})
-      .concat([
-        'graphql/type',
-        'graphql/language',
-        'graphql/language/source',
-        'graphql/language/kinds',
-        'graphql/language/parser',
-        'graphql/language/ast',
-        'graphql/validation',
-        'graphql/validation/validate',
-        'graphql/error',
-        'graphql/utilities',
-        'graphql/type/schema',
-        'graphql/jsutils/find',
-        'graphql/jsutils/invariant',
-        'graphql/jsutils/isNullish',
-        'graphql/utilities/typeFromAST',
-        'graphql/execution/values',
-        'graphql/type/definition',
-        'graphql/type/schema',
-        'graphql/type/introspection',
-        'graphql/type/directives',
-        'graphql/type/scalars',
-      ]);
+// Load Original babel config
+const babelConfig = JSON.parse(fs.readFileSync(path.join(
+  __dirname,
+  'graphql',
+  '.babelrc'
+), 'utf-8'));
+
+const pkg = JSON.parse(fs.readFileSync(path.join(
+  __dirname,
+  'graphql',
+  'package.json'
+)));
+
+const external = Object.keys(pkg.dependencies || {})
+  .concat([
+    'graphql/type',
+    'graphql/language',
+    'graphql/language/source',
+    'graphql/language/kinds',
+    'graphql/language/parser',
+    'graphql/language/ast',
+    'graphql/validation',
+    'graphql/validation/validate',
+    'graphql/error',
+    'graphql/utilities',
+    'graphql/type/schema',
+    'graphql/jsutils/find',
+    'graphql/jsutils/invariant',
+    'graphql/jsutils/isNullish',
+    'graphql/utilities/typeFromAST',
+    'graphql/execution/values',
+    'graphql/type/definition',
+    'graphql/type/schema',
+    'graphql/type/introspection',
+    'graphql/type/directives',
+    'graphql/type/scalars',
+    'graphql/subscription',
+    'graphql/subscription/mapAsyncIterator',
+  ]);
+
+// Modify babel config.
+babelConfig.plugins.unshift(
+  ['babel-plugin-transform-import-duplicate', {
+    exclude: ['node_modules/**'],
+    external,
+    newFiles: [
+      path.join(__dirname, "graphql", "src", "type", "reactiveDirectives.js"),
+      path.join(__dirname, "graphql", "src", "utilities", "asyncIterator.js"),
+    ],
+    mapping: {
+      [path.join(__dirname, "graphql", "src", "(.+?)\.js$")]:
+      path.join(__dirname, "node_modules", "graphql", "$1.js.flow"),
+    }
+  }]
+);
+babelConfig.plugins.push('external-helpers');
+babelConfig.babelrc = false;
+babelConfig.runtimeHelpers = true;
+babelConfig.presets[0][1].modules = false;
+
+// Replace local plugins with required version.
+babelConfig.plugins = babelConfig.plugins.map((plugin) => {
+  let name = plugin;
+  let args = [];
+  if ( Array.isArray(plugin) ) {
+    name = plugin.shift();
+    args = plugin;
+  }
+  if ( typeof name === 'string' ) {
+    const replaceIndex = Object.keys(BABEL_PLUGIN_REPLACE).indexOf(name);
+    if (replaceIndex !== -1) {
+      name = BABEL_PLUGIN_REPLACE[name];
+    }
+  }
+
+  return args.length > 0 ? [name, ...args] : name;
+});
 
 export default {
     entry: 'graphql/src/index.js',
@@ -56,45 +117,7 @@ export default {
           'node_modules/rxjs/**',
         ],
       }),
-      babel({
-        babelrc: false,
-        runtimeHelpers: true,
-        plugins: [
-          [babelTransformDuplicate, {
-              exclude: ['node_modules/**'],
-              external,
-              newFiles: [
-                path.join(__dirname, "graphql", "src", "type", "reactiveDirectives.js")
-              ],
-              mapping: {
-                [path.join(__dirname, "graphql", "src", "(.+?)\.js$")]:
-                 path.join(__dirname, "node_modules", "graphql", "$1.js.flow"),
-              }
-          }],
-          "syntax-async-functions",
-          "transform-class-properties",
-          "transform-flow-strip-types",
-          "transform-object-rest-spread",
-          "transform-es2015-template-literals",
-          "transform-es2015-literals",
-          "transform-es2015-function-name",
-          "transform-es2015-arrow-functions",
-          "transform-es2015-block-scoped-functions",
-          ["transform-es2015-classes", {loose: true}],
-          "transform-es2015-object-super",
-          "transform-es2015-shorthand-properties",
-          "transform-es2015-duplicate-keys",
-          "transform-es2015-computed-properties",
-          "check-es2015-constants",
-          ["transform-es2015-spread", {loose: true}],
-          "transform-es2015-parameters",
-          ["transform-es2015-destructuring", {loose: true}],
-          "transform-es2015-block-scoping",
-          "transform-regenerator",
-          "transform-es3-property-literals",
-          "external-helpers",
-        ],
-      }),
+      babel(babelConfig),
       strip(),
       cleanup({
         maxEmptyLines: 1,
