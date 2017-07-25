@@ -13,7 +13,7 @@ node ./resources/patchVersion.js ${1}
 # Update Submodule repo
 cd graphql
 git remote update origin
-TARGET_BRANCH=rxjs-v${1}
+TARGET_BRANCH=async-v${1}
 BRANCH_NAME=`git symbolic-ref HEAD 2>/dev/null` || BRANCH_NAME='refs/head/'
 BRANCH_NAME=${BRANCH_NAME##refs/heads/}
 if [ "${BRANCH_NAME}" != "${TARGET_BRANCH}" ]; then
