@@ -24,12 +24,13 @@
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "pretest": "npm run build",
-    "test": "jest",
+    "test": "npm run testonly",
+    "testonly": "jest",
     "prepublish": "npm run test"
   },
   "peerDependencies": {
-    "rxjs": "^5.4.2",
-    "graphql": "0.10.5"
+    "graphql": "0.10.5",
+    "rxjs": "^5.4.2"
   },
   "optionalDependencies": {
     "@types/graphql": "^0.10.1"
@@ -71,5 +72,8 @@
       "js",
       "json"
     ]
+  },
+  "dependencies": {
+    "async-generator": "^0.1.0"
   }
 }

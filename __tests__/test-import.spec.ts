@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { makeExecutableSchema } from 'graphql-tools';
-import { graphqlReactive, addReactiveDirectivesToSchema } from '..';
+import { graphqlRx, addReactiveDirectivesToSchema } from '..';
 import { GraphQLInt, GraphQLSchema, GraphQLObjectType } from 'graphql';
 import 'jest';
 
@@ -34,7 +34,7 @@ describe('graphql-rxjs import tests', () => {
       }
     `;
 
-    return graphqlReactive(scheme, query, null, { counterSource })
+    return graphqlRx(scheme, query, null, { counterSource })
       .bufferCount(3)
       .take(1)
       .toPromise().then((values) => {
@@ -78,7 +78,7 @@ describe('graphql-rxjs import tests', () => {
       }
     `;
 
-    return graphqlReactive(scheme, query, null, { counterSource })
+    return graphqlRx(scheme, query, null, { counterSource })
       .bufferCount(3)
       .take(1)
       .toPromise().then((values) => {
@@ -109,7 +109,7 @@ describe('graphql-rxjs import tests', () => {
       }
     `;
 
-    return graphqlReactive(scheme, query, null, { counterSource })
+    return graphqlRx(scheme, query, null, { counterSource })
       .bufferCount(3)
       .take(1)
       .toPromise().then((values) => {
@@ -141,7 +141,7 @@ describe('graphql-rxjs import tests', () => {
       }
     `;
 
-    return graphqlReactive(scheme, query, null)
+    return graphqlRx(scheme, query, null)
       .bufferCount(10)
       .take(1)
       .toPromise().then((values) => {

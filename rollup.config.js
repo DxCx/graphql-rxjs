@@ -10,17 +10,13 @@ import progress from 'rollup-plugin-progress';
 import * as fs from 'fs';
 import * as path from 'path';
 import uglify from 'rollup-plugin-uglify';
+
 const BABEL_PLUGIN_REPLACE = {
   './resources/inline-invariant': require('./graphql/resources/inline-invariant'),
   'transform-import-duplicate': require('./babel-plugin-transform-import-duplicate'),
 };
 
-// Add Graphql's node_modules to path so we can resolve babel plugins.
-process.env.NODE_PATH = fs.realpathSync(path.join(
-  __dirname,
-  'graphql',
-  'node_modules'
-));
+const DEBUG = false;
 
 // Load Original babel config
 const babelConfig = JSON.parse(fs.readFileSync(path.join(
@@ -35,8 +31,16 @@ const pkg = JSON.parse(fs.readFileSync(path.join(
   'package.json'
 )));
 
+const rxPkg = JSON.parse(fs.readFileSync(path.join(
+  __dirname,
+  'package.json'
+)));
+
 const external = Object.keys(pkg.dependencies || {})
+  .concat(Object.keys(rxPkg.dependencies || {}))
   .concat([
+    'rxjs/Observable',
+
     'graphql/type',
     'graphql/language',
     'graphql/language/source',
@@ -100,6 +104,18 @@ babelConfig.plugins = babelConfig.plugins.map((plugin) => {
   return args.length > 0 ? [name, ...args] : name;
 });
 
+const productionPlugins = [
+  strip(),
+  cleanup({
+    maxEmptyLines: 1,
+    comments: "none",
+  }),
+  uglify(),
+];
+if ( DEBUG ) {
+  productionPlugins.length = 0;
+}
+
 export default {
     entry: 'src/index.js',
     format: 'cjs',
@@ -118,12 +134,7 @@ export default {
         ],
       }),
       babel(babelConfig),
-      strip(),
-      cleanup({
-        maxEmptyLines: 1,
-        comments: "none",
-      }),
-      uglify(),
+      ...productionPlugins,
     ],
     dest: 'dist/bundle.js',
     external,
