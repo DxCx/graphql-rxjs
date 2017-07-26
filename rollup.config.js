@@ -12,7 +12,7 @@ import * as path from 'path';
 import uglify from 'rollup-plugin-uglify';
 const BABEL_PLUGIN_REPLACE = {
   './resources/inline-invariant': require('./graphql/resources/inline-invariant'),
-  'babel-plugin-transform-import-duplicate': require('./babel-plugin-transform-import-duplicate'),
+  'transform-import-duplicate': require('./babel-plugin-transform-import-duplicate'),
 };
 
 // Add Graphql's node_modules to path so we can resolve babel plugins.
@@ -64,7 +64,7 @@ const external = Object.keys(pkg.dependencies || {})
 
 // Modify babel config.
 babelConfig.plugins.unshift(
-  ['babel-plugin-transform-import-duplicate', {
+  ['transform-import-duplicate', {
     exclude: ['node_modules/**'],
     external,
     newFiles: [
@@ -101,7 +101,7 @@ babelConfig.plugins = babelConfig.plugins.map((plugin) => {
 });
 
 export default {
-    entry: 'graphql/src/index.js',
+    entry: 'src/index.js',
     format: 'cjs',
     plugins: [
       filesize(),
