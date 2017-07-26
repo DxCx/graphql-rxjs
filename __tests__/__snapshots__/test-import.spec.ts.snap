@@ -59,17 +59,7 @@ exports[`graphql-rxjs import tests also works with vanilla graphql objects 1`] =
 Array [
   Object {
     "data": Object {
-      "counter": 2,
-    },
-  },
-  Object {
-    "data": Object {
-      "counter": 0,
-    },
-  },
-  Object {
-    "data": Object {
-      "counter": 1,
+      "someInt": 123,
     },
   },
 ]
@@ -86,21 +76,17 @@ Array [
 `;
 
 exports[`graphql-rxjs import tests can work with graphql-tools 1`] = `
-Array [
-  Object {
-    "data": Object {
-      "counter": 0,
-    },
+Object {
+  "data": Object {
+    "someInt": 1,
   },
-  Object {
-    "data": Object {
-      "counter": 1,
-    },
+}
+`;
+
+exports[`graphql-rxjs import tests unsubscribe from observable as expected 1`] = `
+Object {
+  "data": Object {
+    "counter": 0,
   },
-  Object {
-    "data": Object {
-      "counter": 2,
-    },
-  },
-]
+}
 `;
