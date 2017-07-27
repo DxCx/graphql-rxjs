@@ -20,8 +20,7 @@
     "url": "http://github.com/DxCx/graphql-rxjs.git"
   },
   "scripts": {
-    "postinstall": "node resources/fixModules.js",
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist && node resources/fixModules.js",
     "build": "rollup -c",
     "pretest": "npm run build",
     "test": "npm run testonly",
