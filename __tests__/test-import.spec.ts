@@ -5,7 +5,7 @@ import 'babel-polyfill';
 import { Observable } from 'rxjs';
 import { makeExecutableSchema } from 'graphql-tools';
 import { graphqlRx, prepareSchema } from '..';
-import { GraphQLInt, GraphQLSchema, GraphQLObjectType } from 'graphql';
+import { introspectionQuery, GraphQLInt, GraphQLSchema, GraphQLObjectType } from 'graphql';
 import 'jest';
 
 const counterSource = Observable.interval(10).publishReplay(1).refCount();
@@ -39,6 +39,33 @@ describe('graphql-rxjs import tests', () => {
       .take(1)
       .toPromise().then((values) => {
         expect(values).toMatchSnapshot();
+    });
+  });
+
+  it("introspectionQuery works as expected", () => {
+    const typeDefs = `
+      # Root Subscription
+      type Query {
+        someInt: Int
+      }
+      `;
+
+    const resolvers = {
+      Query: {
+        someInt(root, args, ctx) {
+          return Observable.of(1);
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+
+    return graphqlRx(scheme, introspectionQuery)
+      .take(1)
+      .toPromise().then((values) => {
+        expect(values.errors).toBeUndefined();
+        expect(values.data).toMatchSnapshot();
     });
   });
 
