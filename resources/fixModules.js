@@ -1,7 +1,7 @@
 const path = require('path');
-const { moveSync } = require('fs-extra');
-const { symlinkSync, readdirSync } = require('fs');
-const { execFileSync } = require('child_process');
+const moveSync = require('fs-extra').moveSync;
+const fs = require('fs');
+const execFileSync = require('child_process').execFileSync;
 
 console.log('Executing npm install of graphql');
 console.log(execFileSync('npm', [
@@ -11,8 +11,8 @@ console.log(execFileSync('npm', [
 
 const thisModulesPath = path.join(__dirname, '..', 'node_modules');
 const graphqlModulesPath = path.join(__dirname, '..', 'graphql', 'node_modules');
-const thisDeps = readdirSync(thisModulesPath);
-const graphqlDeps = readdirSync(graphqlModulesPath);
+const thisDeps = fs.readdirSync(thisModulesPath);
+const graphqlDeps = fs.readdirSync(graphqlModulesPath);
 const missingDeps = graphqlDeps
   .filter((i) => false === i.startsWith('.'))
   .filter((i) => thisDeps.indexOf(i) === -1);
@@ -20,5 +20,5 @@ const missingDeps = graphqlDeps
 missingDeps.forEach((depName) => {
   const thisPath = path.join(thisModulesPath, depName);
   const graphqlPath = path.join(graphqlModulesPath, depName);
-  symlinkSync(graphqlPath, thisPath, 'dir');
+  fs.symlinkSync(graphqlPath, thisPath, 'dir');
 });
