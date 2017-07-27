@@ -14,11 +14,11 @@ before_install:
   - npm install -g npm@4
 
 install:
-  - npm install
   - npm prune
+  - npm install
 
 script:
-  - npm test
+  - npm testonly
 
 # Allow Travis tests to run in containers.
 sudo: false
