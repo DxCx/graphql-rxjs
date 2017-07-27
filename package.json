@@ -72,8 +72,5 @@
       "js",
       "json"
     ]
-  },
-  "dependencies": {
-    "async-generator": "^0.1.0"
   }
 }

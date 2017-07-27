@@ -22,7 +22,6 @@ export function prepareSchema(schema) {
 
 export * from '../graphql/src/index';
 
-
 function wrapAsyncIterable(fn) {
   return (...args) => toAsyncIterable(fn(...args));
 }
@@ -52,3 +51,6 @@ function wrapResolvers(schema) {
     }
   });
 }
+
+// XXX: Should be removed, used for testing.
+export { toAsyncIterable } from './utils';
