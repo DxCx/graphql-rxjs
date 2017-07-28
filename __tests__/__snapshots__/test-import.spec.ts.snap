@@ -55,6 +55,26 @@ Array [
 ]
 `;
 
+exports[`graphql-rxjs import tests also works for subscriptions 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "counter": 0,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 1,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 2,
+    },
+  },
+]
+`;
+
 exports[`graphql-rxjs import tests also works with vanilla graphql objects 1`] = `
 Array [
   Object {
@@ -1091,4 +1111,32 @@ Object {
     "counter": 0,
   },
 }
+`;
+
+exports[`import-tests Rx Engines executeRx works as expected 1`] = `
+Object {
+  "data": Object {
+    "someInt": 1,
+  },
+}
+`;
+
+exports[`import-tests Rx Engines subscribeRx works as expected 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "counter": 2,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 0,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 1,
+    },
+  },
+]
 `;

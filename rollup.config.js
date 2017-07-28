@@ -56,6 +56,7 @@ const external = Object.keys(pkg.dependencies || {})
     'graphql/jsutils/invariant',
     'graphql/jsutils/isNullish',
     'graphql/utilities/typeFromAST',
+    'graphql/utilities/getOperationAST',
     'graphql/execution/values',
     'graphql/type/definition',
     'graphql/type/schema',

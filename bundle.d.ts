@@ -1,4 +1,10 @@
-import { DocumentNode, ExecutionResult, GraphQLSchema, GraphQLDirective } from 'graphql';
+import {
+  DocumentNode,
+  ExecutionResult,
+  GraphQLSchema,
+  GraphQLDirective,
+  GraphQLFieldResolver,
+} from 'graphql';
 import { Observable } from 'rxjs/Observable';
 export * from 'graphql';
 
@@ -17,7 +23,8 @@ export function executeReactive(
   rootValue?: any,
   contextValue?: any,
   variableValues?: {[key: string]: any},
-  operationName?: string
+  operationName?: string,
+  fieldResolver?: GraphQLFieldResolver<any, any>,
 ): AsyncIterator<ExecutionResult>;
 
 export function graphqlRx(
@@ -26,7 +33,8 @@ export function graphqlRx(
   rootValue?: any,
   contextValue?: any,
   variableValues?: {[key: string]: any},
-  operationName?: string
+  operationName?: string,
+  fieldResolver?: GraphQLFieldResolver<any, any>,
 ): Observable<ExecutionResult>;
 
 export function executeRx(
@@ -35,7 +43,19 @@ export function executeRx(
   rootValue?: any,
   contextValue?: any,
   variableValues?: {[key: string]: any},
-  operationName?: string
+  operationName?: string,
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+): Observable<ExecutionResult>;
+
+export function subscribeRx(
+  schema: GraphQLSchema,
+  document: DocumentNode,
+  rootValue?: any,
+  contextValue?: any,
+  variableValues?: {[key: string]: any},
+  operationName?: string,
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+  subscribeFieldResolver?: GraphQLFieldResolver<any, any>
 ): Observable<ExecutionResult>;
 
 export function prepareSchema(

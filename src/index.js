@@ -2,6 +2,7 @@ import {
   addReactiveDirectivesToSchema,
   graphqlReactive,
   executeReactive,
+  subscribe,
   defaultFieldResolver,
 } from '../graphql/src/index';
 import { asyncToObservable, toAsyncIterable } from './utils';
@@ -12,6 +13,10 @@ export function graphqlRx(...args) {
 
 export function executeRx(...args) {
   return asyncToObservable(executeReactive(...args));
+}
+
+export function subscribeRx(...args) {
+  return asyncToObservable(subscribe(...args));
 }
 
 export function prepareSchema(schema) {
