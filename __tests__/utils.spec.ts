@@ -1,7 +1,3 @@
-// TODO: Fix properly
-import 'babel-core/register';
-import 'babel-polyfill';
-
 import * as root from '..';
 import { Observable } from 'rxjs';
 import { getAsyncIterator } from 'iterall';

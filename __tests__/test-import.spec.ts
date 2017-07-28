@@ -1,7 +1,3 @@
-// TODO: Fix properly
-import 'babel-core/register';
-import 'babel-polyfill';
-
 import { Observable } from 'rxjs';
 import { makeExecutableSchema } from 'graphql-tools';
 import { graphqlRx, prepareSchema } from '..';
