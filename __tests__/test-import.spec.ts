@@ -334,4 +334,41 @@ describe('import-tests Rx Engines', () => {
         expect(values).toMatchSnapshot();
     });
   });
+
+  it("mutation is not allowed to use reactive directives", () => {
+    const typeDefs = `
+      type Query {
+        someInt: Int
+      }
+
+      type Mutation {
+        shouldntDefer: Int
+      }
+      `;
+
+    const resolvers = {
+      Query: {
+        someInt(root, args, ctx) {
+          return Observable.of(1);
+        },
+      },
+      Mutation: {
+        shouldntDefer(root, args, ctx) {
+          return Promise.resolve(1);
+        }
+      }
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `
+      mutation {
+        shouldntDefer @defer
+      }
+    `;
+
+    return graphqlRx(scheme, query)
+      .toArray().toPromise().then((values) => {
+        expect(values).toMatchSnapshot();
+    });
 });

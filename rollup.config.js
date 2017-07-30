@@ -47,8 +47,6 @@ const external = Object.keys(pkg.dependencies || {})
     'graphql/language/kinds',
     'graphql/language/parser',
     'graphql/language/ast',
-    'graphql/validation',
-    'graphql/validation/validate',
     'graphql/error',
     'graphql/utilities',
     'graphql/type/schema',
@@ -64,7 +62,35 @@ const external = Object.keys(pkg.dependencies || {})
     'graphql/type/directives',
     'graphql/type/scalars',
     'graphql/subscription',
-    'graphql/subscription/mapAsyncIterator',
+
+    // Validation rules
+    'graphql/validation/validate',
+    'graphql/validation/rules/ArgumentsOfCorrectType',
+    'graphql/validation/rules/DefaultValuesOfCorrectType',
+    'graphql/validation/rules/FieldsOnCorrectType',
+    'graphql/validation/rules/FragmentsOnCompositeTypes',
+    'graphql/validation/rules/KnownArgumentNames',
+    'graphql/validation/rules/KnownDirectives',
+    'graphql/validation/rules/KnownFragmentNames',
+    'graphql/validation/rules/KnownTypeNames',
+    'graphql/validation/rules/LoneAnonymousOperation',
+    'graphql/validation/rules/NoFragmentCycles',
+    'graphql/validation/rules/NoUndefinedVariables',
+    'graphql/validation/rules/NoUnusedFragments',
+    'graphql/validation/rules/NoUnusedVariables',
+    'graphql/validation/rules/OverlappingFieldsCanBeMerged',
+    'graphql/validation/rules/PossibleFragmentSpreads',
+    'graphql/validation/rules/ProvidedNonNullArguments',
+    'graphql/validation/rules/ScalarLeafs',
+    'graphql/validation/rules/SingleFieldSubscriptions',
+    'graphql/validation/rules/UniqueArgumentNames',
+    'graphql/validation/rules/UniqueDirectivesPerLocation',
+    'graphql/validation/rules/UniqueFragmentNames',
+    'graphql/validation/rules/UniqueInputFieldNames',
+    'graphql/validation/rules/UniqueOperationNames',
+    'graphql/validation/rules/UniqueVariableNames',
+    'graphql/validation/rules/VariablesAreInputTypes',
+    'graphql/validation/rules/VariablesInAllowedPosition',
   ]);
 
 // Modify babel config.
@@ -75,6 +101,7 @@ babelConfig.plugins.unshift(
     newFiles: [
       path.join(__dirname, "graphql", "src", "type", "reactiveDirectives.js"),
       path.join(__dirname, "graphql", "src", "utilities", "asyncIterator.js"),
+      path.join(__dirname, "graphql", "src", "validation", "rules", "NoReactiveMutations.js"),
     ],
     mapping: {
       [path.join(__dirname, "graphql", "src", "(.+?)\.js$")]:

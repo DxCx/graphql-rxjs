@@ -1121,6 +1121,16 @@ Object {
 }
 `;
 
+exports[`import-tests Rx Engines mutation is not allowed to use reactive directives 1`] = `
+Array [
+  Object {
+    "errors": Array [
+      [GraphQLError: Anonymous Mutation is executed serially and cannot use @defer/@live],
+    ],
+  },
+]
+`;
+
 exports[`import-tests Rx Engines subscribeRx works as expected 1`] = `
 Array [
   Object {
