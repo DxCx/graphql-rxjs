@@ -1,15 +1,22 @@
 # GraphQL-RxJs
 
-fork of [graphql-js](https://github.com/graphql/graphql-js) which adds Observable support ([RxJs](http://reactivex.io/rxjs/)).
+fork of [graphql-js](https://github.com/graphql/graphql-js) which adds AsyncIterator & Observable support ([RxJs](http://reactivex.io/rxjs/)).
 
 [![npm version](https://badge.fury.io/js/graphql-rxjs.svg)](http://badge.fury.io/js/graphql-rxjs)
 [![Build Status](https://travis-ci.org/DxCx/graphql-rxjs.svg?branch=master)](https://travis-ci.org/DxCx/graphql-rxjs?branch=master)
 
 ## Intro
 
-This package basiclly adds Observables support to a GraphQL resolver.
-It is importing the original graphql-js package for all the code that is not patched,
-and provide a reactive execution engine over it.
+This package adds Reactivity for GraphQLResolver, Which means you can now return:
+ - Observables (Requires call to prepareSchema)
+ - AsyncIterator
+
+This package also adds reactive directives support:
+ - @defer
+ - @live
+
+The package is pretty small because it is importing the original graphql-js package,
+and then patches it to provide a reactive execution engine over it.
 
 ## Documentation
 
@@ -26,7 +33,7 @@ so basiclly, each graphql-js version should have a working graphql-rxjs package 
 
 The library exports the following functions:
 
-#### Observable support
+#### AsyncIterator support
 
 ```typescript
 export function graphqlReactive(
@@ -36,7 +43,8 @@ export function graphqlReactive(
   contextValue?: any,
   variableValues?: {[key: string]: any},
   operationName?: string
-): Observable<ExecutionResult>;
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+): AsyncIterator<ExecutionResult>;
 
 export function executeReactive(
   schema: GraphQLSchema,
@@ -45,10 +53,50 @@ export function executeReactive(
   contextValue?: any,
   variableValues?: {[key: string]: any},
   operationName?: string
-): Observable<ExecutionResult>;
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+): AsyncIterator<ExecutionResult>;
 ```
 
 The signature is equal to GraphQL original implementation (graphql + execute),
+except it returns an asyncIterator instead of a promise.
+The asyncIterator will stream immutable results.
+
+#### Observable support
+
+```typescript
+export function graphqlRx(
+  schema: GraphQLSchema,
+  requestString: string,
+  rootValue?: any,
+  contextValue?: any,
+  variableValues?: {[key: string]: any},
+  operationName?: string
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+): Observable<ExecutionResult>;
+
+export function executeRx(
+  schema: GraphQLSchema,
+  document: DocumentNode,
+  rootValue?: any,
+  contextValue?: any,
+  variableValues?: {[key: string]: any},
+  operationName?: string
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+): Observable<ExecutionResult>;
+
+export function subscribeRx(
+  schema: GraphQLSchema,
+  document: DocumentNode,
+  rootValue?: any,
+  contextValue?: any,
+  variableValues?: {[key: string]: any},
+  operationName?: string,
+  fieldResolver?: GraphQLFieldResolver<any, any>,
+  subscribeFieldResolver?: GraphQLFieldResolver<any, any>
+): Observable<ExecutionResult>;
+```
+
+The signature is equal to GraphQL original implementation (graphql + execute + subscribe),
 except it returns an observable instead of a promise.
 The observable will stream immutable results.
 
@@ -62,6 +110,18 @@ export function addReactiveDirectivesToSchema(
 Calling this function on your existing `GraphQLSchema` object will
 enable reactive directives suppot for the schema.
 More information about reactive directives can be found below.
+
+### Observable support in resolvers
+```typescript
+export function prepareSchema(
+  schema: GraphQLSchema,
+): prepareSchema;
+```
+
+NOTE: This function will already install reactive directives over the schema.
+
+Calling this function on your existing `GraphQLSchema` object
+will wrap resolvers so you can return Observable from them instead of AsyncIterator
 
 ## Getting Started:
 
@@ -123,7 +183,7 @@ More information about reactive directives can be found below.
   ```typescript
   import { Observable } from 'rxjs';
   import { makeExecutableSchema } from 'graphql-tools';
-  import { graphqlReactive } from 'graphql-rxjs';
+  import { prepareSchema, graphqlRx } from 'graphql-rxjs';
   
   const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
 
@@ -149,6 +209,7 @@ More information about reactive directives can be found below.
 
   // Compose togather resolver and typeDefs.
   const scheme = makeExecutableSchema({typeDefs: typeDefs, resolvers: resolvers});
+  prepareSchema(schema);
 
   // subscribe the clock
   const query = `
@@ -158,7 +219,7 @@ More information about reactive directives can be found below.
   `
 
   // Calling the reactive version of graphql
-  graphqlReactive(scheme, query, null, { clockSource })
+  graphqlRx(scheme, query, null, { clockSource })
   .subscribe(console.log.bind(console), console.error.bind(console));
   ```
 
@@ -187,7 +248,7 @@ This library also implements reactive directives, those are supported at the mom
 	```typescript
 	import { Observable } from 'rxjs';
 	import { makeExecutableSchema } from 'graphql-tools';
-	import { addReactiveDirectivesToSchema, graphqlReactive } from 'graphql-rxjs';
+	import { prepareSchema, graphqlReactive } from 'graphql-rxjs';
 
 	const remoteString = new Promise((resolve, reject) => {
 	  setTimeout(() => resolve('Hello World!'), 5000);
@@ -207,7 +268,7 @@ This library also implements reactive directives, those are supported at the mom
 	};
 
 	const scheme = makeExecutableSchema({typeDefs, resolvers});
-	addReactiveDirectivesToSchema(scheme);
+	prepareSchema(scheme);
 
 	const query = `
 	  query {
@@ -241,7 +302,7 @@ This library also implements reactive directives, those are supported at the mom
   	```typescript
 	import { Observable } from 'rxjs';
 	import { makeExecutableSchema } from 'graphql-tools';
-	import { addReactiveDirectivesToSchema, graphqlReactive } from '..';
+	import { prepareSchema, graphqlReactive } from '..';
 
 	const clockSource = Observable.interval(1000).map(() => new Date()).publishReplay(1).refCount();
 
@@ -259,7 +320,7 @@ This library also implements reactive directives, those are supported at the mom
 	};
 
 	const scheme = makeExecutableSchema({typeDefs, resolvers});
-	addReactiveDirectivesToSchema(scheme);
+	prepareSchema(scheme);
 
 	const query = `
 	  query {
