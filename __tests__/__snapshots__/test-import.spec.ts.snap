@@ -1106,11 +1106,58 @@ In some cases, you need to provide options to alter GraphQL's execution behavior
 `;
 
 exports[`graphql-rxjs import tests unsubscribe from observable as expected 1`] = `
-Object {
-  "data": Object {
-    "counter": 0,
+Array [
+  Object {
+    "data": Object {
+      "counter": 0,
+    },
   },
-}
+  Object {
+    "data": Object {
+      "counter": 1,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 2,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 3,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 4,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 5,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 6,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 7,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 8,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 9,
+    },
+  },
+]
 `;
 
 exports[`import-tests Rx Engines executeRx works as expected 1`] = `

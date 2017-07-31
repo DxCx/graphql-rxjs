@@ -142,6 +142,7 @@ describe('graphql-rxjs import tests', () => {
 
   it("unsubscribe from observable as expected", () => {
     let unsubscribe = false;
+
     const QueryType = new GraphQLObjectType({
       name: 'Query',
       fields: {
@@ -149,9 +150,26 @@ describe('graphql-rxjs import tests', () => {
           type: GraphQLInt,
           resolve: (root, args, ctx) => {
             return new Observable((observer) => {
-              observer.next(0);
+              let i = 0;
+              const to = setInterval(() => {
+                try {
+                  expect(unsubscribe).toBe(false);
+
+                  if ( i >= 15 ) {
+                    return;
+                  }
+
+                  observer.next(i);
+                  i ++;
+                } catch (e) {
+                  observer.error(e);
+                }
+              }, 10);
+
               return () => {
                 unsubscribe = true;
+
+                clearInterval(to);
               };
             });
           },
@@ -166,11 +184,12 @@ describe('graphql-rxjs import tests', () => {
 
     const query = `
       query {
-        counter
+        counter @live
       }
     `;
 
     return graphqlRx(scheme, query, null)
+      .bufferCount(10)
       .take(1)
       .toPromise().then((values) => {
         expect(values).toMatchSnapshot();
