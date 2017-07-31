@@ -229,6 +229,37 @@ describe('graphql-rxjs import tests', () => {
     });
   });
 
+  it("reactive directives works without prepareSchema", () => {
+    const QueryType = new GraphQLObjectType({
+      name: 'Query',
+      fields: {
+        counter: {
+          type: GraphQLInt,
+          resolve: (root, args, ctx) => {
+            return Observable.interval(10);
+          },
+        }
+      }
+    });
+
+    const scheme = new GraphQLSchema({
+      query: QueryType,
+    });
+
+    const query = `
+      query {
+        counter @live
+      }
+    `;
+
+    return graphqlRx(scheme, query, null)
+      .bufferCount(10)
+      .take(1)
+      .toPromise().then((values) => {
+        expect(values).toMatchSnapshot();
+    });
+  });
+
   it("also works for subscriptions", () => {
     const SubscriptionType = new GraphQLObjectType({
       name: 'Subscription',

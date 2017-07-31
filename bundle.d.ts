@@ -66,5 +66,9 @@ export function addReactiveDirectivesToSchema(
   schema: GraphQLSchema,
 ): void;
 
+export function wrapResolvers(
+  schema: GraphQLSchema,
+): void;
+
 export const GraphQLLiveDirective: GraphQLDirective;
 export const GraphQLDeferDirective: GraphQLDirective;

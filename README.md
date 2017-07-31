@@ -8,7 +8,7 @@ fork of [graphql-js](https://github.com/graphql/graphql-js) which adds AsyncIter
 ## Intro
 
 This package adds Reactivity for GraphQLResolver, Which means you can now return:
- - Observables (Requires call to prepareSchema)
+ - Observables
  - AsyncIterator
 
 This package also adds reactive directives support:
@@ -100,7 +100,22 @@ The signature is equal to GraphQL original implementation (graphql + execute + s
 except it returns an observable instead of a promise.
 The observable will stream immutable results.
 
-#### Reactive Directives
+#### Preparing schema for GraphQL-RxJs
+```typescript
+export function prepareSchema(
+  schema: GraphQLSchema,
+): prepareSchema;
+```
+
+This function is used to prepare schema for graphql-rxjs.
+wrapping resolvers, adding reactive directives support, etc..
+At the moment, it will be automatically invoked when running
+GraphQL-RxJS.
+
+if you don't want to call it directly, you can use the inner
+APIs seperately:
+
+##### Reactive Directives
 ```typescript
 export function addReactiveDirectivesToSchema(
   schema: GraphQLSchema,
@@ -111,17 +126,17 @@ Calling this function on your existing `GraphQLSchema` object will
 enable reactive directives suppot for the schema.
 More information about reactive directives can be found below.
 
-### Observable support in resolvers
+##### Observable support in resolvers
 ```typescript
-export function prepareSchema(
+export function wrapResolvers(
   schema: GraphQLSchema,
-): prepareSchema;
+): void;
 ```
 
-NOTE: This function will already install reactive directives over the schema.
+Calling this function on your existing `GraphQLSchema` object will
+enable reactive directives suppot for the schema.
+More information about reactive directives can be found below.
 
-Calling this function on your existing `GraphQLSchema` object
-will wrap resolvers so you can return Observable from them instead of AsyncIterator
 
 ## Getting Started:
 
