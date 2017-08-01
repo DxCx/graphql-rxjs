@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - "4"
   - "6"
   - "7"
 
@@ -15,10 +14,9 @@ before_install:
 
 install:
   - npm install
-  - npm prune
 
 script:
-  - npm test
+  - npm run testonly
 
 # Allow Travis tests to run in containers.
 sudo: false

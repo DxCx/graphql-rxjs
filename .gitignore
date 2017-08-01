@@ -1,4 +1,6 @@
 *
+!src/
+!src/**/*
 !resources/
 !resources/**/*
 !__tests__/
