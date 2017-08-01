@@ -1252,3 +1252,18 @@ Array [
   },
 ]
 `;
+
+exports[`import-tests Rx Engines validation works as expected 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "someInt": undefined,
+    },
+  },
+  Object {
+    "data": Object {
+      "someInt": 1,
+    },
+  },
+]
+`;

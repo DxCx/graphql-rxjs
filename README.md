@@ -112,6 +112,9 @@ wrapping resolvers, adding reactive directives support, etc..
 At the moment, it will be automatically invoked when running
 GraphQL-RxJS.
 
+NOTE: if you are using original graphql's validate, you will have to trigger
+prepareSchema manually and not count on auto-trigger.
+
 if you don't want to call it directly, you can use the inner
 APIs seperately:
 

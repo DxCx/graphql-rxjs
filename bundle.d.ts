@@ -5,8 +5,8 @@ import {
   GraphQLDirective,
   GraphQLFieldResolver,
 } from 'graphql';
-import { Observable } from 'rxjs/Observable';
 export * from 'graphql';
+import { Observable } from 'rxjs/Observable';
 
 export function graphqlReactive(
   schema: GraphQLSchema,
