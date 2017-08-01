@@ -5,6 +5,7 @@ import {
   subscribeRx,
   graphqlRx,
   prepareSchema,
+  validate,
 } from '..';
 import {
   parse,
@@ -381,6 +382,38 @@ describe('import-tests Rx Engines', () => {
     return executeRx(scheme, parse(query))
       .take(1)
       .toPromise().then((values) => {
+        expect(values).toMatchSnapshot();
+    });
+  });
+
+
+  it("validation works as expected", () => {
+    const typeDefs = `
+      type Query {
+        someInt: Int
+      }
+      `;
+
+    const resolvers = {
+      Query: {
+        someInt(root, args, ctx) {
+          return Observable.of(1);
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    const query = parse(`
+      query {
+        someInt @defer
+      }
+    `);
+
+    const validationErrors = validate(scheme, query);
+    expect(validationErrors).toHaveLength(0);
+
+    return executeRx(scheme, query)
+      .toArray().toPromise().then((values) => {
         expect(values).toMatchSnapshot();
     });
   });

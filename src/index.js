@@ -3,6 +3,7 @@ import {
   graphqlReactive as graphqlAsync,
   executeReactive as executeAsync,
   subscribe as subscribeAsync,
+  validate as originalValidate,
   defaultFieldResolver,
 } from '../graphql/src/index';
 import { asyncToObservable, toAsyncIterable } from './utils';
@@ -33,8 +34,17 @@ export function subscribeRx(...args) {
   return asyncToObservable(subscribe(...args));
 }
 
+export function validate(...args) {
+  if ( args.length > 0 ) {
+    args[0] = prepareSchema(args[0]);
+  }
+
+  return originalValidate(...args);
+}
+
 export function prepareSchema(schema) {
-  // TODO: Do we want to duplicate?
+  // XXX: Do we want to duplicate object and modify?
+  // or modify original as we are doing now?
   if ( ! schema._reactiveReady ) {
     addReactiveDirectivesToSchema(schema);
     wrapResolvers(schema);
