@@ -18,6 +18,9 @@ This package also adds reactive directives support:
 The package is pretty small because it is importing the original graphql-js package,
 and then patches it to provide a reactive execution engine over it.
 
+## Examples
+ - [Simple Websocket Server with GraphiQL](https://github.com/DxCx/graphql-rxjs-websocket-example)
+
 ## Documentation
 
 There isn't much to document, all of GraphQL documentation is relevant.
