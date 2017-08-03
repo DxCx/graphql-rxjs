@@ -9,6 +9,7 @@ import {
 import { asyncToObservable, toAsyncIterable } from './utils';
 
 export * from '../graphql/src/index';
+export { AsyncGeneratorFromObserver } from '../graphql/src/utilities/asyncIterator';
 
 export function graphqlReactive(...args) {
   return graphqlAsync(...hookGraphqlArguments(args, false));
