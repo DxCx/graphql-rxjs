@@ -23,6 +23,7 @@
     "prebuild": "rimraf dist && node resources/fixModules.js",
     "build": "rollup -c",
     "pretest": "npm run build",
+    "benchmark": "babel-node ./graphql/node_modules/.bin/_mocha --require ./graphql/resources/mocha-bootload ./resources/benchmark.js",
     "test": "npm run testonly",
     "testonly": "jest",
     "prepublish": "npm run test"
@@ -37,8 +38,11 @@
   "devDependencies": {
     "@types/graphql": "^0.10.1",
     "@types/jest": "^20.0.4",
+    "babel-cli": "^6.24.1",
     "babel-plugin-detective": "^2.0.0",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-es2015-node": "^6.1.1",
+    "benchmark": "^2.1.4",
     "fs-extra": "^4.0.0",
     "graphql": "0.10.5",
     "graphql-tools": "^1.1.0",
