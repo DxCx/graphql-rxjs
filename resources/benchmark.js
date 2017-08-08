@@ -12,40 +12,7 @@ import {
 
 import { Observable } from 'rxjs/Rx';
 import { graphql as graphqlRx } from '..';
-const swTextSchema = `
-  enum Episode { NEWHOPE, EMPIRE, JEDI }
-
-  interface Character {
-    id: String!
-    name: String
-    friends: [Character]
-    appearsIn: [Episode]
-  }
-
-  type Human implements Character {
-    id: String!
-    name: String
-    friends: [Character]
-    appearsIn: [Episode]
-    homePlanet: String
-  }
-
-  type Droid implements Character {
-    id: String!
-    name: String
-    friends: [Character]
-    appearsIn: [Episode]
-    primaryFunction: String
-  }
-
-  type Query {
-    hero(episode: Episode): Character
-    human(id: String!): Human
-    droid(id: String!): Droid
-  }
- `;
-const StarWarsSchema = buildSchema(swTextSchema);
-
+import { StarWarsSchema } from './benchmark_sw';
 
 function runBenchmark(cases = {}, callback = () => {}) {
   const suite = new Benchmark.Suite();

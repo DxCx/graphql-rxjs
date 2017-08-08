@@ -23,7 +23,7 @@
     "prebuild": "rimraf dist && node resources/fixModules.js",
     "build": "rollup -c",
     "pretest": "npm run build",
-    "benchmark": "babel-node ./graphql/node_modules/.bin/_mocha --require ./graphql/resources/mocha-bootload ./resources/benchmark.js",
+    "benchmark": "babel-node --max-old-space-size=4096 ./graphql/node_modules/.bin/_mocha --require ./graphql/resources/mocha-bootload ./resources/benchmark.js",
     "test": "npm run testonly",
     "testonly": "jest",
     "prepublish": "npm run test"
