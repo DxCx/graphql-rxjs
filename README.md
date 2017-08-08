@@ -377,6 +377,28 @@ This library also implements reactive directives, those are supported at the mom
 Just install `@types/graphql` for initial GraphQL support,
 then the package will automatically add typings for the new functions it provides.
 
+## Benchmarks
+```
+      * graphqlOri x 7,496 ops/sec ±9.20% (78 runs sampled)
+      * graphqlRx x 6,790 ops/sec ±3.48% (75 runs sampled)
+      => Fastest is graphqlOri
+    ✓ compare performance for simple query (11088ms)
+
+      * graphqlOri x 3,040 ops/sec ±9.81% (70 runs sampled)
+      * graphqlRx x 1,303 ops/sec ±4.19% (74 runs sampled)
+      => Fastest is graphqlOri
+    ✓ compare performance for deep query (17515ms)
+    
+      * graphqlOri x 5,360 ops/sec ±20.55% (12 runs sampled)
+      * graphqlRx x 3,067 ops/sec ±32.41% (10 runs sampled)
+      => Fastest is graphqlOri
+    ✓ compare performance for serial mutation (27004ms)
+```
+
+as results shows above, the reactive engine is abit slower then the original one,
+however that was expected, i have yet to put the effort on optimizations,
+and i am planing to optimize on the future.
+
 ## Issues
 
 If you found an issue or have an idea, you are welcome to open a new ticket in [Issues Page](https://github.com/DxCx/graphql-rxjs/issues)
