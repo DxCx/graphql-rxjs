@@ -454,4 +454,394 @@ describe('import-tests Rx Engines', () => {
       .toArray().toPromise().then((values) => {
         expect(values).toMatchSnapshot();
     });
+  });
+
+  it("nested @live unsubscribes as expected", () => {
+    const obs = [];
+
+    const typeDefs = `
+      type Nested {
+        root: Int
+        liveInt: Int
+      }
+
+      type Query {
+        nestedType: Nested
+      }
+      `;
+    const trackObservable = (observable) => new Observable((observer) => {
+      const sub = observable.subscribe(observer);
+      const id = obs.length;
+      obs.push(true);
+
+      return () => {
+        obs[id] = false;
+        sub.unsubscribe();
+      };
+    });
+
+
+    const resolvers = {
+      Nested: {
+        root(root) {
+          return root;
+        },
+        liveInt(root, args, ctx) {
+          return trackObservable(Observable.interval(20).map((i) => i * root));
+        }
+      },
+      Query: {
+        nestedType(root, args, ctx) {
+          return trackObservable(Observable.interval(100).skip(1));
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `
+      query {
+        nestedType @live {
+          root
+          liveInt @live
+        }
+      }
+    `;
+
+    return graphqlRx(scheme, query)
+      .map((v) => v.data.nestedType)
+      .take(10)
+      .toArray().toPromise().then((values) => {
+
+        // If something left it means unsubscribe was not called for it.
+        expect(obs
+          .map((v, i) => ({ v, i }))
+          .filter((m) => m.v)
+          .map((m) => m.i)
+        ).toHaveLength(0);
+
+        expect(values).toMatchSnapshot();
+    });
+  });
+
+  it("nested @live with lists unsubscribes as expected", () => {
+    const obs = [];
+
+    const typeDefs = `
+      type Nested {
+        root: Int
+        liveInt: Int
+      }
+
+      type Query {
+        nestedType: [Nested]
+      }
+      `;
+    const trackObservable = (observable) => new Observable((observer) => {
+      const sub = observable.subscribe(observer);
+      const id = obs.length;
+      obs.push(true);
+
+      return () => {
+        obs[id] = false;
+        sub.unsubscribe();
+      };
+    });
+
+
+    const resolvers = {
+      Nested: {
+        root(root) {
+          return root;
+        },
+        liveInt(root, args, ctx) {
+          return trackObservable(Observable.interval(20).map((i) => i * root));
+        }
+      },
+      Query: {
+        nestedType(root, args, ctx) {
+          return trackObservable(Observable.interval(100).skip(1).scan((o, v) => [...o, v], []));
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `
+      query {
+        nestedType @live {
+          root
+          liveInt @live
+        }
+      }
+    `;
+
+    return graphqlRx(scheme, query)
+      .map((v) => v.data.nestedType)
+      .take(10)
+      .toArray().toPromise().then((values) => {
+        // If something left it means unsubscribe was not called for it.
+        expect(obs
+          .map((v, i) => ({ v, i }))
+          .filter((m) => m.v)
+          .map((m) => m.i)
+        ).toHaveLength(0);
+        expect(values).toMatchSnapshot();
+    });
+  });
+
+  it("nested @live as expected", () => {
+    const obs = [];
+
+    const typeDefs = `
+      type FinalObject {
+        root: Int
+        value: Int
+      }
+
+      type Nested {
+        root: Int
+        liveInt: FinalObject
+      }
+
+      type Query {
+        nestedType: [Nested]
+      }
+      `;
+
+    const trackObservable = (observable) => new Observable((observer) => {
+      const sub = observable.subscribe(observer);
+      const id = obs.length;
+      obs.push(true);
+
+      return () => {
+        obs[id] = false;
+        sub.unsubscribe();
+      };
+    });
+
+    const resolvers = {
+      FinalObject: {
+        value: (root, args, ctx) => Observable.of(root.value),
+        root: (root, args, ctx) => Observable.of(root.root),
+      },
+      Nested: {
+        root(root) {
+          return root;
+        },
+        liveInt(root, args, ctx) {
+          return trackObservable(Observable.interval(20).map((i) => ({ root: root, value: i * root })));
+        }
+      },
+      Query: {
+        nestedType(root, args, ctx) {
+          return trackObservable(new Observable((observer) => {
+            observer.next([2]);
+          }));
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `query {
+      nestedType @live {
+        root
+        liveInt @live {
+          root
+          value
+        }
+      }
+    }`;
+
+    return graphqlRx(scheme, query)
+      .map((v) => v.data.nestedType)
+      .take(10)
+      .toArray().toPromise().then((values) => {
+        // If something left it means unsubscribe was not called for it.
+        expect(obs
+          .map((v, i) => ({ v, i }))
+          .filter((m) => m.v)
+          .map((m) => m.i)
+        ).toHaveLength(0);
+        expect(values).toMatchSnapshot();
+    });
+  });
+
+  it("@live with infinate result sibling", () => {
+    const obs = [];
+
+    const typeDefs = `
+      type OtherType {
+        value: String
+      }
+
+      type FinalObject {
+        root: Int
+        value: Int
+      }
+
+      type Nested {
+        inf: OtherType
+        liveInt: FinalObject
+      }
+
+      type Query {
+        nestedType: [Nested]
+      }
+      `;
+
+    const trackObservable = (observable) => new Observable((observer) => {
+      const sub = observable.subscribe(observer);
+      const id = obs.length;
+      obs.push(true);
+
+      return () => {
+        obs[id] = false;
+        sub.unsubscribe();
+      };
+    });
+
+    const resolvers = {
+      OtherType: {
+        value: (root) => Promise.resolve(root.value),
+      },
+      Nested: {
+        inf(root) {
+          return trackObservable(new Observable((observer) => {
+            observer.next({ value: root });
+            // No Complete.
+          }));
+        },
+        liveInt(root, args, ctx) {
+          return trackObservable(Observable.interval(20).map((i) => ({ root: root, value: i * root })));
+        }
+      },
+      Query: {
+        nestedType(root, args, ctx) {
+          return trackObservable(new Observable((observer) => {
+            observer.next([2]);
+          }));
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `query mixedLive {
+      nestedType @live {
+        inf {
+          value
+        }
+        liveInt {
+          root
+          value
+        }
+      }
+    }`;
+
+    return graphqlRx(scheme, query)
+      .map((v) => v.data.nestedType)
+      .take(10)
+      .toArray().toPromise().then((values) => {
+        // If something left it means unsubscribe was not called for it.
+        expect(obs
+          .map((v, i) => ({ v, i }))
+          .filter((m) => m.v)
+          .map((m) => m.i)
+        ).toHaveLength(0);
+        expect(values).toMatchSnapshot();
+    });
+  });
+
+  it("@live with infinate + static result sibling", () => {
+    const obs = [];
+
+    const typeDefs = `
+      type OtherType {
+        value: String
+      }
+
+      type FinalObject {
+        root: Int
+        value: Int
+      }
+
+      type Nested {
+        root: Int
+        inf: OtherType
+        liveInt: FinalObject
+      }
+
+      type Query {
+        nestedType: [Nested]
+      }
+      `;
+
+    const trackObservable = (observable) => new Observable((observer) => {
+      const sub = observable.subscribe(observer);
+      const id = obs.length;
+      obs.push(true);
+
+      return () => {
+        obs[id] = false;
+        sub.unsubscribe();
+      };
+    });
+
+    const resolvers = {
+      OtherType: {
+        value: (root) => Promise.resolve(root.value),
+      },
+      Nested: {
+        root(root) {
+          return root;
+        },
+        inf(root) {
+          return trackObservable(new Observable((observer) => {
+            observer.next({ value: root });
+            // No Complete.
+          }));
+        },
+        liveInt(root, args, ctx) {
+          return trackObservable(Observable.interval(20).map((i) => ({ root: root, value: i * root })));
+        }
+      },
+      Query: {
+        nestedType(root, args, ctx) {
+          return trackObservable(new Observable((observer) => {
+            observer.next([2]);
+          }));
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `query mixedLive {
+      nestedType @live {
+        root
+        inf {
+          value
+        }
+        liveInt {
+          root
+          value
+        }
+      }
+    }`;
+
+    return graphqlRx(scheme, query)
+      .map((v) => v.data.nestedType)
+      .take(10)
+      .toArray().toPromise().then((values) => {
+        // If something left it means unsubscribe was not called for it.
+        expect(obs
+          .map((v, i) => ({ v, i }))
+          .filter((m) => m.v)
+          .map((m) => m.i)
+        ).toHaveLength(0);
+        expect(values).toMatchSnapshot();
+    });
+  });
 });
