@@ -1215,6 +1215,131 @@ Array [
 ]
 `;
 
+exports[`import-tests Rx Engines @live with infinate + static result sibling 1`] = `
+Array [
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 0,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 2,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 4,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 6,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 8,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 10,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 12,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 14,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 16,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 18,
+      },
+      "root": 2,
+    },
+  ],
+]
+`;
+
 exports[`import-tests Rx Engines @live with infinate result sibling 1`] = `
 Array [
   Array [
