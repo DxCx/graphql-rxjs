@@ -36,11 +36,11 @@ export function toAsyncIterable(result) {
   }
 
   return AsyncGeneratorFromObserver((observer) => {
-    let subscription = result.subscribe(
-      (x) => observer.next(x),
-      (e) => observer.error(e),
-      () => observer.complete(),
-    );
+    let subscription = result.subscribe({
+      next(x) { observer.next(x) },
+      error(e) { observer.error(e) },
+      complete() { observer.complete() },
+    });
 
     return () => {
       if ( subscription ) {

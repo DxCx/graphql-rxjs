@@ -1233,6 +1233,140 @@ Array [
 ]
 `;
 
+exports[`import-tests Rx Engines nested @live unsubscribes as expected 1`] = `
+Array [
+  Object {
+    "liveInt": 0,
+    "root": 1,
+  },
+  Object {
+    "liveInt": 1,
+    "root": 1,
+  },
+  Object {
+    "liveInt": 2,
+    "root": 1,
+  },
+  Object {
+    "liveInt": 3,
+    "root": 1,
+  },
+  Object {
+    "liveInt": 0,
+    "root": 2,
+  },
+  Object {
+    "liveInt": 2,
+    "root": 2,
+  },
+  Object {
+    "liveInt": 4,
+    "root": 2,
+  },
+  Object {
+    "liveInt": 6,
+    "root": 2,
+  },
+  Object {
+    "liveInt": 0,
+    "root": 3,
+  },
+  Object {
+    "liveInt": 3,
+    "root": 3,
+  },
+]
+`;
+
+exports[`import-tests Rx Engines nested @live with lists unsubscribes as expected 1`] = `
+Array [
+  Array [
+    Object {
+      "liveInt": 0,
+      "root": 1,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 1,
+      "root": 1,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 2,
+      "root": 1,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 3,
+      "root": 1,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 0,
+      "root": 1,
+    },
+    Object {
+      "liveInt": 0,
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 1,
+      "root": 1,
+    },
+    Object {
+      "liveInt": 0,
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 1,
+      "root": 1,
+    },
+    Object {
+      "liveInt": 2,
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 2,
+      "root": 1,
+    },
+    Object {
+      "liveInt": 2,
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 2,
+      "root": 1,
+    },
+    Object {
+      "liveInt": 4,
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": 3,
+      "root": 1,
+    },
+    Object {
+      "liveInt": 4,
+      "root": 2,
+    },
+  ],
+]
+`;
+
 exports[`import-tests Rx Engines subscribeRx works as expected 1`] = `
 Array [
   Object {
