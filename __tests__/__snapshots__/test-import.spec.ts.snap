@@ -1215,6 +1215,121 @@ Array [
 ]
 `;
 
+exports[`import-tests Rx Engines @live with infinate result sibling 1`] = `
+Array [
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 0,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 2,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 4,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 6,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 8,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 10,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 12,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 14,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 16,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "inf": Object {
+        "value": "2",
+      },
+      "liveInt": Object {
+        "root": 2,
+        "value": 18,
+      },
+    },
+  ],
+]
+`;
+
 exports[`import-tests Rx Engines executeRx works as expected 1`] = `
 Object {
   "data": Object {
@@ -1230,6 +1345,101 @@ Array [
       [GraphQLError: Anonymous Mutation is executed serially and cannot use @defer/@live],
     ],
   },
+]
+`;
+
+exports[`import-tests Rx Engines nested @live as expected 1`] = `
+Array [
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 0,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 2,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 4,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 6,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 8,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 10,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 12,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 14,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 16,
+      },
+      "root": 2,
+    },
+  ],
+  Array [
+    Object {
+      "liveInt": Object {
+        "root": 2,
+        "value": 18,
+      },
+      "root": 2,
+    },
+  ],
 ]
 `;
 

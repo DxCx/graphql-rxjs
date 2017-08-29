@@ -667,4 +667,90 @@ describe('import-tests Rx Engines', () => {
         expect(values).toMatchSnapshot();
     });
   });
+
+  it("@live with infinate result sibling", () => {
+    const obs = [];
+
+    const typeDefs = `
+      type OtherType {
+        value: String
+      }
+
+      type FinalObject {
+        root: Int
+        value: Int
+      }
+
+      type Nested {
+        inf: OtherType
+        liveInt: FinalObject
+      }
+
+      type Query {
+        nestedType: [Nested]
+      }
+      `;
+
+    const trackObservable = (observable) => new Observable((observer) => {
+      const sub = observable.subscribe(observer);
+      const id = obs.length;
+      obs.push(true);
+
+      return () => {
+        obs[id] = false;
+        sub.unsubscribe();
+      };
+    });
+
+    const resolvers = {
+      OtherType: {
+        value: (root) => Promise.resolve(root.value),
+      },
+      Nested: {
+        inf(root) {
+          return trackObservable(new Observable((observer) => {
+            observer.next({ value: root });
+            // No Complete.
+          }));
+        },
+        liveInt(root, args, ctx) {
+          return trackObservable(Observable.interval(20).map((i) => ({ root: root, value: i * root })));
+        }
+      },
+      Query: {
+        nestedType(root, args, ctx) {
+          return trackObservable(new Observable((observer) => {
+            observer.next([2]);
+          }));
+        },
+      },
+    };
+
+    const scheme = makeExecutableSchema({typeDefs, resolvers});
+    prepareSchema(scheme);
+    const query = `query mixedLive {
+      nestedType @live {
+        inf {
+          value
+        }
+        liveInt {
+          root
+          value
+        }
+      }
+    }`;
+
+    return graphqlRx(scheme, query)
+      .map((v) => v.data.nestedType)
+      .take(10)
+      .toArray().toPromise().then((values) => {
+        // If something left it means unsubscribe was not called for it.
+        expect(obs
+          .map((v, i) => ({ v, i }))
+          .filter((m) => m.v)
+          .map((m) => m.i)
+        ).toHaveLength(0);
+        expect(values).toMatchSnapshot();
+    });
+  });
 });
