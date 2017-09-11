@@ -7,6 +7,8 @@ import {
   defaultFieldResolver,
 } from '../graphql/src/index';
 import { asyncToObservable, toAsyncIterable } from './utils';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 
 export * from '../graphql/src/index';
 export { AsyncGeneratorFromObserver } from '../graphql/src/utilities/asyncIterator';
@@ -24,7 +26,8 @@ export function subscribe(...args) {
 }
 
 export function graphqlRx(...args) {
-  return asyncToObservable(graphqlReactive(...args));
+  return Observable.fromPromise(graphqlReactive(...args))
+    .flatMap((asyncIterator) => asyncToObservable(asyncIterator));
 }
 
 export function executeRx(...args) {
@@ -32,7 +35,8 @@ export function executeRx(...args) {
 }
 
 export function subscribeRx(...args) {
-  return asyncToObservable(subscribe(...args));
+  return Observable.fromPromise(subscribe(...args))
+    .flatMap((asyncIterator) => asyncToObservable(asyncIterator));
 }
 
 export function validate(...args) {

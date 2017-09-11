@@ -40,6 +40,7 @@ const external = Object.keys(pkg.dependencies || {})
   .concat(Object.keys(rxPkg.dependencies || {}))
   .concat([
     'rxjs/Observable',
+    'rxjs/add/observable/fromPromise',
 
     'graphql/type',
     'graphql/language',
@@ -48,6 +49,8 @@ const external = Object.keys(pkg.dependencies || {})
     'graphql/language/parser',
     'graphql/language/ast',
     'graphql/error',
+    'graphql/error/GraphQLError',
+    'graphql/error/locatedError',
     'graphql/utilities',
     'graphql/type/schema',
     'graphql/jsutils/find',

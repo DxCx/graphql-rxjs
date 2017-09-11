@@ -1706,17 +1706,17 @@ exports[`import-tests Rx Engines subscribeRx works as expected 1`] = `
 Array [
   Object {
     "data": Object {
-      "counter": 2,
-    },
-  },
-  Object {
-    "data": Object {
       "counter": 0,
     },
   },
   Object {
     "data": Object {
       "counter": 1,
+    },
+  },
+  Object {
+    "data": Object {
+      "counter": 2,
     },
   },
 ]

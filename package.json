@@ -29,14 +29,14 @@
     "prepublish": "npm run test"
   },
   "peerDependencies": {
-    "graphql": "0.10.5",
+    "graphql": "0.11.3",
     "rxjs": "^5.4.2"
   },
   "optionalDependencies": {
-    "@types/graphql": "^0.10.1"
+    "@types/graphql": "^0.11.1"
   },
   "devDependencies": {
-    "@types/graphql": "^0.10.1",
+    "@types/graphql": "^0.11.1",
     "@types/jest": "^20.0.4",
     "babel-cli": "^6.24.1",
     "babel-plugin-detective": "^2.0.0",
@@ -44,7 +44,7 @@
     "babel-preset-es2015-node": "^6.1.1",
     "benchmark": "^2.1.4",
     "fs-extra": "^4.0.0",
-    "graphql": "0.10.5",
+    "graphql": "0.11.3",
     "graphql-tools": "^1.1.0",
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
@@ -62,7 +62,8 @@
     "rollup-plugin-uglify": "^2.0.1",
     "rxjs": "^5.4.2",
     "ts-jest": "^20.0.7",
-    "typescript": "^2.4.2"
+    "typescript": "^2.4.2",
+    "yarn": "^1.0.0"
   },
   "jest": {
     "transform": {
