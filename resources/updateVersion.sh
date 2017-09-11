@@ -24,7 +24,7 @@ cd ../
 
 # Test the output
 rm -Rf node_modules/
-npm install
+yarn install
 # npm install runs also npm test
 
 # Generate version branch

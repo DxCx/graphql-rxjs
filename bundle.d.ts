@@ -17,7 +17,7 @@ export function graphqlReactive(
   contextValue?: any,
   variableValues?: {[key: string]: any},
   operationName?: string
-): AsyncIterator<ExecutionResult>;
+): Promise<AsyncIterator<ExecutionResult>>;
 
 export function executeReactive(
   schema: GraphQLSchema,

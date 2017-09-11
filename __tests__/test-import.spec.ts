@@ -16,7 +16,7 @@ import {
 } from 'graphql';
 import 'jest';
 
-const counterSource = Observable.interval(10).publishReplay(1).refCount();
+const counterSource = Observable.interval(10);
 
 describe('graphql-rxjs import tests', () => {
   it("can work with graphql-tools", () => {
