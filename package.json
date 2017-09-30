@@ -1,6 +1,6 @@
 {
   "name": "graphql-rxjs",
-  "version": "0.11.3-0",
+  "version": "0.11.6-0",
   "description": "Addon package for GraphQL which adds support for Observables",
   "contributors": [
     "Hagai Cohen <hagai.co@gmail.com>",
@@ -29,41 +29,41 @@
     "prepublish": "npm run test"
   },
   "peerDependencies": {
-    "graphql": "0.11.3",
-    "rxjs": "^5.4.2"
+    "graphql": "0.11.6",
+    "rxjs": "^5.4.3"
   },
   "optionalDependencies": {
-    "@types/graphql": "^0.11.1"
+    "@types/graphql": "^0.11.4"
   },
   "devDependencies": {
-    "@types/graphql": "^0.11.1",
-    "@types/jest": "^20.0.4",
-    "babel-cli": "^6.24.1",
+    "@types/graphql": "^0.11.4",
+    "@types/jest": "^21.1.1",
+    "babel-cli": "^6.26.0",
     "babel-plugin-detective": "^2.0.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-es2015-node": "^6.1.1",
     "benchmark": "^2.1.4",
-    "fs-extra": "^4.0.0",
-    "graphql": "0.11.3",
-    "graphql-tools": "^1.1.0",
-    "jest": "^20.0.4",
-    "jest-cli": "^20.0.4",
+    "fs-extra": "^4.0.2",
+    "graphql": "0.11.6",
+    "graphql-tools": "^1.2.3",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
     "minimatch": "^3.0.4",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.45.2",
-    "rollup-plugin-babel": "^2.7.1",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-cleanup": "^1.0.1",
-    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-filesize": "^1.4.2",
     "rollup-plugin-flow": "^1.1.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-progress": "^0.4.0",
     "rollup-plugin-strip": "^1.1.1",
     "rollup-plugin-uglify": "^2.0.1",
-    "rxjs": "^5.4.2",
-    "ts-jest": "^20.0.7",
-    "typescript": "^2.4.2",
-    "yarn": "^1.0.0"
+    "rxjs": "^5.4.3",
+    "ts-jest": "^21.0.1",
+    "typescript": "^2.5.3",
+    "yarn": "^1.1.0"
   },
   "jest": {
     "transform": {
