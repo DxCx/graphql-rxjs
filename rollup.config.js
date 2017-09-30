@@ -42,6 +42,9 @@ const external = Object.keys(pkg.dependencies || {})
     'rxjs/Observable',
     'rxjs/add/observable/fromPromise',
 
+    // jsUtils
+    'graphql/jsutils/ObjMap',
+
     'graphql/type',
     'graphql/language',
     'graphql/language/source',
