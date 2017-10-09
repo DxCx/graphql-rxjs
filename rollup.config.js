@@ -151,8 +151,7 @@ if ( DEBUG ) {
 }
 
 export default {
-    entry: 'src/index.js',
-    format: 'cjs',
+    input: 'src/index.js',
     plugins: [
       filesize(),
       progress(),
@@ -170,6 +169,9 @@ export default {
       babel(babelConfig),
       ...productionPlugins,
     ],
-    dest: 'dist/bundle.js',
+    output: {
+      file: 'dist/bundle.js',
+      format: 'cjs',
+    },
     external,
 };
